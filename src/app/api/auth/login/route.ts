@@ -1,11 +1,3 @@
-/*
-* =================================================================================================
-* FILE: src/app/api/auth/login/route.ts
-*
-* This is the secure backend API for handling user login.
-* It finds the user, compares the hashed password, and creates a secure session token (JWT).
-* =================================================================================================
-*/
 import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import User from '@/models/User';
