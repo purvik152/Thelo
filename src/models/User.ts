@@ -1,3 +1,10 @@
+/*
+* =================================================================================================
+* FILE: src/models/User.ts
+*
+* ACTION: No changes are needed here. Just verify your file matches this.
+* =================================================================================================
+*/
 import mongoose from 'mongoose';
 
 const UserSchema = new mongoose.Schema({
@@ -12,7 +19,7 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: [true, 'Please provide an email.'],
-    unique: true, // Ensures no two users can have the same email
+    unique: true,
     match: [/.+\@.+\..+/, 'Please fill a valid email address'],
   },
   password: {
