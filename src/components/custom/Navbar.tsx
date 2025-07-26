@@ -28,14 +28,15 @@ export function Navbar() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/dashboard/shopkeeper" className="mr-6 flex items-center space-x-2">
-            <Package className="h-6 w-6" />
-            <span className="hidden font-bold sm:inline-block">Thelo</span>
+            <span className="hidden font-bold sm:inline-block">
+              <img src="/FinalLogo-withoutBG.png" className="max-h-16" alt="Thelo"></img>
+            </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link href="/dashboard/shopkeeper" className="transition-colors hover:text-foreground/80 text-foreground">
               Marketplace
             </Link>
-            <Link href="/dashboard/shopkeeper/orders" className="transition-colors hover:text-foreground/80 text-foreground/60">
+            <Link href="/dashboard/shopkeeper/orders" className="transition-colors hover:text-foreground/80 text-foreground">
               My Orders
             </Link>
           </nav>

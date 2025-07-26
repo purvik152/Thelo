@@ -77,17 +77,20 @@ function HomePageContent() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Header */}
-      <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="navigationbar sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center space-x-2">
-            <Wheat className="h-6 w-6 text-green-600" />
-            <span className="font-bold text-lg">Thelo</span>
+            <span className="font-bold text-lg">
+                <div>
+                    <img src="/FinalLogo-withoutBG.png" className="max-h-16" alt="Thelo"></img>
+                </div>
+            </span>
           </Link>
           <div className="flex items-center space-x-2">
             <Button variant="ghost" asChild>
               <Link href="/?modal=login">Login</Link>
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700" asChild>
+            <Button className="bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" asChild>
               <Link href="/?modal=signup">Sign Up</Link>
             </Button>
           </div>
@@ -95,19 +98,19 @@ function HomePageContent() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 md:py-32">
+      <section className="py-20 md:py-32 bg-[#FBF3E5]">
           <div className="container text-center px-4 md:px-6">
               <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-gray-900">
                   Directly from the Source.
               </h1>
-              <h2 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-blue-600 mt-2">
+              <h2 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-[#BEA093] mt-2">
                   Delivered to Your Door.
               </h2>
               <p className="mt-8 max-w-3xl mx-auto text-lg md:text-xl text-gray-600">
                   The definitive B2B marketplace for India's finest raw food materials. We bridge the gap between producers and businesses, ensuring quality, transparency, and growth.
               </p>
               <div className="mt-10 flex justify-center gap-4">
-                  <Button size="lg" className="h-12 px-8 text-base bg-blue-600 hover:bg-blue-700" asChild>
+                  <Button size="lg" className="h-12 px-8 text-base bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" asChild>
                       <Link href="/?modal=signup">Become a Seller</Link>
                   </Button>
                    <Button size="lg" variant="outline" className="h-12 px-8 text-base" asChild>
@@ -118,7 +121,7 @@ function HomePageContent() {
       </section>
 
       {/* Featured Categories Section */}
-      <section className="py-20 md:py-28 bg-gray-50">
+      <section className="py-20 md:py-28 bg-[#FDFBF4] ">
         <div className="container px-4 md:px-6">
             <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold tracking-tight">Explore Our Categories</h2>
@@ -138,13 +141,13 @@ function HomePageContent() {
       </section>
       
       {/* How It Works Section */}
-      <section className="py-20 md:py-28 bg-background">
+      <section className="py-20 md:py-28 bg-[#FBF3E5]">
           <div className="container px-4 md:px-6 text-center">
               <h2 className="text-4xl font-bold tracking-tight">A Simple, Transparent Process</h2>
               <p className="mt-3 text-lg text-muted-foreground">Connecting buyers and sellers in just 3 easy steps.</p>
               <div className="mt-20 relative grid md:grid-cols-3 gap-y-16 md:gap-x-16">
                   {/* Dotted line for desktop */}
-                  <div className="hidden md:block absolute top-1/2 left-0 w-full h-px -translate-y-8">
+                  <div className="hidden md:block absolute top-1/3 left-0 w-full h-px -translate-y-8">
                       <svg width="100%" height="100%"><line x1="0" y1="50%" x2="100%" y2="50%" strokeWidth="2" strokeDasharray="8 8" className="stroke-gray-300"></line></svg>
                   </div>
                   <div className="relative flex flex-col items-center">
@@ -167,8 +170,8 @@ function HomePageContent() {
       </section>
 
       {/* Footer */}
-      <footer className="py-12 bg-gray-900 text-gray-400">
-          <div className="container px-4 md:px-6 text-center">
+      <footer className="py-12 bg-[#BEA093] text-gray-400">
+          <div className="container px-4 md:px-6 text-center text-black">
               <p>&copy; 2025 Thelo. A new era of B2B trade in India.</p>
           </div>
       </footer>

@@ -72,14 +72,14 @@ export function LoginPageComponent() {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+              <Input id="email" name="email" type="email" placeholder="m@example.com" className=" bg-[#FDFBF4]" required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" required />
+              <Input id="password" name="password" type="password" className=" bg-[#FDFBF4]" required />
             </div>
             {error && <FormMessage type="error" message={error} />}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" disabled={loading}>
               {loading ? 'Logging in...' : 'Login'}
             </Button>
           </div>

@@ -78,15 +78,15 @@ export function SignupPageComponent() {
         <form onSubmit={handleSignup}>
           <div className="grid gap-4">
             <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2"><Label htmlFor="first-name">First name</Label><Input id="first-name" name="first-name" placeholder="Max" required /></div>
-              <div className="grid gap-2"><Label htmlFor="last-name">Last name</Label><Input id="last-name" name="last-name" placeholder="Robinson" required /></div>
+              <div className="grid gap-2"><Label htmlFor="first-name">First name</Label><Input id="first-name" name="first-name" placeholder="Max" className=" bg-[#FDFBF4]" required /></div>
+              <div className="grid gap-2"><Label htmlFor="last-name">Last name</Label><Input id="last-name" name="last-name" placeholder="Robinson" className=" bg-[#FDFBF4]" required /></div>
             </div>
-            <div className="grid gap-2"><Label htmlFor="email">Email</Label><Input id="email" name="email" type="email" placeholder="m@example.com" required /></div>
-            <div className="grid gap-2"><Label htmlFor="password">Password</Label><Input id="password" name="password" type="password" required /></div>
+            <div className="grid gap-2"><Label htmlFor="email">Email</Label><Input id="email" name="email" type="email" placeholder="m@example.com" className=" bg-[#FDFBF4]" required /></div>
+            <div className="grid gap-2"><Label htmlFor="password">Password</Label><Input id="password" name="password" type="password" className=" bg-[#FDFBF4]"required /></div>
             <div className="grid gap-2">
               <Label htmlFor="role">I am a...</Label>
               <Select onValueChange={setRole} defaultValue={role}>
-                <SelectTrigger><SelectValue placeholder="Select your role" /></SelectTrigger>
+                <SelectTrigger className=" bg-[#FDFBF4]"><SelectValue placeholder="Select your role" /></SelectTrigger>
                 <SelectContent>
                   <SelectItem value="shopkeeper">Shopkeeper</SelectItem>
                   <SelectItem value="seller">Seller</SelectItem>
@@ -94,7 +94,7 @@ export function SignupPageComponent() {
               </Select>
             </div>
             {error && <FormMessage type="error" message={error} />}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" disabled={loading}>
               {loading ? 'Creating Account...' : 'Create an account'}
             </Button>
           </div>

@@ -79,7 +79,7 @@ function ManageProductsView() {
         <>
             <div className="flex items-center justify-between mb-8">
                 <div><h1 className="text-3xl font-bold">My Products</h1><p className="text-muted-foreground">Manage your inventory and view product status.</p></div>
-                <Button onClick={() => handleOpenForm(null)}><PlusCircle className="mr-2 h-4 w-4" />Add New Product</Button>
+                <Button onClick={() => handleOpenForm(null)} className="bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]"><PlusCircle className="mr-2 h-4 w-4" />Add New Product</Button>
             </div>
             <div className="rounded-lg border bg-card">
                 <Table>

@@ -27,14 +27,15 @@ export function SellerNavbar() {
       <div className="container flex h-16 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/dashboard/seller" className="mr-6 flex items-center space-x-2">
-            <ShoppingBag className="h-6 w-6" />
-            <span className="hidden font-bold sm:inline-block">Thelo Seller</span>
+            <span className="hidden font-bold sm:inline-block">
+              <img src="/FinalLogo-withoutBG.png" className="max-h-16"></img>
+            </span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             <Link href="/dashboard/seller" className="transition-colors hover:text-foreground/80 text-foreground">
               My Products
             </Link>
-            <Link href="/dashboard/seller/orders" className="transition-colors hover:text-foreground/80 text-foreground/60">
+            <Link href="/dashboard/seller/orders" className="transition-colors hover:text-foreground/80 text-foreground">
               Orders Received
             </Link>
           </nav>
