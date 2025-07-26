@@ -76,15 +76,15 @@ export default function ShopkeeperMarketplace() {
       <div className="mb-10 rounded-lg bg-card p-6 border shadow-sm">
         <h1 className="text-2xl font-bold mb-4">Find Products for Your Shop</h1>
         <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <div className="md:col-span-2 relative">
+          <div className="md:col-span-2 relative bg-white">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input type="text" placeholder="Product name or category" className="pl-10 h-12" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
           </div>
-          <div className="md:col-span-2 relative">
+          <div className="md:col-span-2 relative bg-white">
             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input type="text" placeholder="City or State" className="pl-10 h-12" value={location} onChange={(e) => setLocation(e.target.value)} />
           </div>
-          <Button type="submit" className="h-12 text-base font-semibold md:col-span-1">Find Products</Button>
+          <Button type="submit" className="h-12 text-base font-semibold md:col-span-1 bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]">Find Products</Button>
         </form>
       </div>
 
