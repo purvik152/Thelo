@@ -61,7 +61,7 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
     return (
         <DropdownMenu onOpenChange={handleOpenChange}>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="relative">
+                <Button variant="ghost" size="icon" className="relative bg-[#BEA093] text-white hover:bg-[#FBF3E5] hover:text-[#BEA093] ">
                     {unreadCount > 0 && (
                         <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                             {unreadCount}
@@ -70,8 +70,8 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
                     <Bell className="h-5 w-5" />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-80 md:w-96">
-                <DropdownMenuLabel>
+            <DropdownMenuContent align="end" className="w-80 md:w-96 bg-[#FBF3E5]">
+                <DropdownMenuLabel className="bg-[#BEA093] rounded-t-lg">
                     {role === 'seller' ? 'New Orders' : 'Order Updates'}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />

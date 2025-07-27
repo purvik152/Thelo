@@ -59,7 +59,7 @@ export default function MyOrdersPage() {
 
     if (isLoading) {
         return (
-            <div className="container mx-auto py-8">
+            <div className="container mx-auto py-8 max-w-7xl bg-white">
                 <h1 className="text-3xl font-bold mb-8">My Orders</h1>
                 <div className="space-y-6">
                     <Skeleton className="h-48 w-full rounded-lg" />
@@ -70,33 +70,33 @@ export default function MyOrdersPage() {
     }
 
     return (
-        <div className="container mx-auto py-8">
+        <div className="container mx-auto py-8 max-w-7xl px-16 bg-white">
             <h1 className="text-3xl font-bold mb-8">My Orders</h1>
             {orders.length > 0 ? (
                 <div className="space-y-6">
                     {orders.map(order => (
-                        <Card key={order._id}>
-                            <CardHeader className="flex flex-row justify-between items-center bg-gray-50 p-4">
+                        <Card key={order._id} className="pt-0">
+                            <CardHeader className="flex flex-row justify-between items-center bg-[#BEA093] p-4 border border-[#BEA093] rounded-t-lg">
                                 <div>
                                     <CardTitle>Order #{order._id.toString().slice(-6).toUpperCase()}</CardTitle>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm text-muted-foreground text-white pt-2">
                                         Placed on: {new Date(order.createdAt).toLocaleDateString()}
                                     </p>
                                 </div>
-                                <Badge variant={getBadgeVariant(order.status)}>{order.status}</Badge>
+                                <Badge variant={getBadgeVariant(order.status)} className="bg-[#FBF3E5] text-black hover:bg-[#BEA093] hover:text-[#FBF3E5]">{order.status}</Badge>
                             </CardHeader>
-                            <CardContent className="p-4">
+                            <CardContent className="p-4 ">
                                 {order.items.map(item => (
-                                    <div key={item.product._id} className="flex items-center gap-4 py-3 border-b last:border-b-0">
+                                    <div key={item.product._id} className="flex items-center gap-10 py-0 px-6 border-b last:border-b-0">
                                         <Image 
                                             src={item.product.imageUrl || 'https://placehold.co/64x64'}
                                             alt={item.product.name}
                                             width={50}
                                             height={50}
-                                            className="rounded-md object-cover"
+                                            className="rounded-md object-cover h-24 w-24"
                                         />
                                         <div className="flex-grow">
-                                            <p className="font-semibold">{item.product.name}</p>
+                                            <p className="font-semibold text-xl">{item.product.name}</p>
                                             <p className="text-sm text-muted-foreground">
                                                 {item.quantity} x ₹{item.price.toFixed(2)}
                                             </p>

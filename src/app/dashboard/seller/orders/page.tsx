@@ -100,38 +100,38 @@ export default function OrdersReceivedPage() {
             {orders.length > 0 ? (
                 <div className="space-y-6">
                     {orders.map(order => (
-                        <Card key={order._id}>
-                            <CardHeader className="flex flex-row justify-between items-center bg-gray-50 p-4">
+                        <Card key={order._id} className="pt-0">
+                            <CardHeader className="flex flex-row justify-between items-centerbg-[#BEA093] bg-[#BEA093] rounded-t-lg p-4">
                                 <div>
                                     <CardTitle>Order #{order._id.slice(-6).toUpperCase()}</CardTitle>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-sm text-muted-foreground text-white pt-2">
                                         Received on: {new Date(order.createdAt).toLocaleDateString()}
                                     </p>
                                 </div>
-                                <Badge variant={getBadgeVariant(order.status)}>{order.status}</Badge>
+                                <Badge variant={getBadgeVariant(order.status)} className="bg-[#FBF3E5] text-black hover:bg-[#BEA093] hover:text-[#FBF3E5]">{order.status}</Badge>
                             </CardHeader>
-                            <CardContent className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <CardContent className="p-4 grid grid-cols-1 md:grid-cols-2 gap-6 px-10">
                                 <div className="space-y-3">
                                     <h3 className="font-semibold">Items in this Order</h3>
                                     {order.items.map(item => (
-                                        <div key={item.product._id} className="flex items-center gap-4">
+                                        <div key={item.product._id} className="flex items-center gap-10">
                                             <Image 
                                                 src={item.product.imageUrl || 'https://placehold.co/64x64'}
                                                 alt={item.product.name}
                                                 width={40}
                                                 height={40}
-                                                className="rounded-md object-cover"
+                                                className="rounded-md object-cover h-24 w-24"
                                             />
                                             <div className="flex-grow">
-                                                <p className="font-medium text-sm">{item.product.name}</p>
-                                                <p className="text-xs text-muted-foreground">
+                                                <p className="font-medium text-xl">{item.product.name}</p>
+                                                <p className="text-md text-muted-foreground">
                                                     {item.quantity} x ₹{item.price.toFixed(2)}
                                                 </p>
                                             </div>
                                         </div>
                                     ))}
                                 </div>
-                                <div className="space-y-3 bg-blue-50 p-4 rounded-lg border border-blue-200">
+                                <div className="space-y-3 bg-[#FDFBF4] p-4 rounded-lg border border-2">
                                     <h3 className="font-semibold">Customer & Shipping Details</h3>
                                     <div className="text-sm">
                                         <p><span className="font-medium">Name:</span> {order.customer.firstName} {order.customer.lastName}</p>
@@ -144,6 +144,7 @@ export default function OrdersReceivedPage() {
                                 <Button 
                                     onClick={() => handleUpdateStatus(order._id, 'Shipped')}
                                     disabled={order.status !== 'Pending'}
+                                    className="bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]"
                                 >
                                     {order.status === 'Pending' ? 'Mark as Shipped' : `Order ${order.status}`}
                                 </Button>

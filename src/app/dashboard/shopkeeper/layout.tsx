@@ -14,7 +14,7 @@ export default function ShopkeeperLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div>
+    <div className="flex flex-col items-center">
       <Navbar />
       {children}
     </div>
