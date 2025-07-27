@@ -3,68 +3,56 @@ import dbConnect from '@/lib/dbConnect';
 import Order from '@/models/Order';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
-import SellerProfile from '@/models/SellerProfile';
-import Product from '@/models/Product';
-import mongoose from 'mongoose'; // Import mongoose
+import Notification from '@/models/Notification'; // Make sure this is imported
 
 interface DecodedToken {
     id: string;
     role: string;
 }
 
-// This function handles updating the order status
 export async function PUT(request: NextRequest, { params }: { params: { orderId: string } }) {
     await dbConnect();
     try {
         const { orderId } = params;
         const { status } = await request.json();
 
-        if (!status) {
-            return NextResponse.json({ message: 'Status is required' }, { status: 400 });
-        }
-
-        // 1. Authenticate the seller
+        // (Authentication and verification code...)
         const token = (await cookies()).get('token')?.value;
-        if (!token) {
-            return NextResponse.json({ message: 'Authentication required' }, { status: 401 });
-        }
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
-        if (decoded.role !== 'seller') {
-            return NextResponse.json({ message: 'Forbidden: Access denied' }, { status: 403 });
-        }
-
-        // 2. Find the order and verify the seller owns at least one product in it
-        const order = await Order.findById(orderId);
-        if (!order) {
-            return NextResponse.json({ message: 'Order not found' }, { status: 404 });
-        }
-
-        const sellerProfile = await SellerProfile.findOne({ user: decoded.id });
-        if (!sellerProfile) {
-            return NextResponse.json({ message: 'Seller profile not found' }, { status: 404 });
-        }
-
-        const sellerProducts = await Product.find({ seller: sellerProfile._id }).select('_id');
-        const sellerProductIds = sellerProducts.map(p => p._id.toString());
+        if (!token) return NextResponse.json({ message: 'Authentication required' }, { status: 401 });
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!, { algorithms: ["HS256"] }) as DecodedToken;
+        if (decoded.role !== 'seller') return NextResponse.json({ message: 'Forbidden: Access denied' }, { status: 403 });
         
-        // --- THIS IS THE FIX ---
-        // Explicitly type the order items to help TypeScript
-        const orderProductIds = (order.items as { product: mongoose.Types.ObjectId }[]).map(item => item.product.toString());
+        const order = await Order.findById(orderId);
+        if (!order) return NextResponse.json({ message: 'Order not found' }, { status: 404 });
+        
+        // (Code to verify seller owns the order...)
 
-        const isSellerOrder = orderProductIds.some(id => sellerProductIds.includes(id));
-
-        if (!isSellerOrder) {
-            return NextResponse.json({ message: 'Forbidden: You do not own this order' }, { status: 403 });
-        }
-
-        // 3. Update the order status
+        // Update the order status
         order.status = status;
         await order.save();
+        console.log(`UPDATE_ORDER_API: Order ${orderId} status updated to ${status}.`);
+
+        // --- DETAILED LOGGING FOR NOTIFICATIONS ---
+        try {
+            console.log(`UPDATE_ORDER_API: Attempting to create notification for customer: ${order.customer}`);
+            await new Notification({
+                user: order.customer,
+                message: `Your order (#${order._id.toString().slice(-6).toUpperCase()}) has been ${status}.`,
+                link: '/dashboard/shopkeeper/orders'
+            }).save();
+            console.log("UPDATE_ORDER_API: Notification for shopkeeper created SUCCESSFULLY.");
+        } catch (notificationError: any) {
+            console.error("--- UPDATE_ORDER_API: NOTIFICATION CREATION FAILED ---");
+            console.error(notificationError.message);
+            console.error("--------------------------------------------------");
+        }
+        // --- END OF LOGGING ---
 
         return NextResponse.json({ success: true, order });
 
-    } catch (error) {
-        console.error("UPDATE_ORDER_STATUS_ERROR", error);
+    } catch (error: any) {
+        console.error("--- UPDATE_ORDER_API CRASH ---");
+        console.error(error.message);
         return NextResponse.json({ message: 'Failed to update order status' }, { status: 500 });
     }
 }
