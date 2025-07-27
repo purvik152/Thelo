@@ -14,9 +14,15 @@ export default function SellerLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-muted/40">
-      <SellerNavbar />
-      <main>{children}</main>
+    // FIX: Removed `items-center` to allow children to expand to full width.
+    <div className="min-h-screen flex flex-col items-center  bg-muted/40">
+      <div className="w-full mx-4">
+        <SellerNavbar />
+      </div>
+      {/* FIX: Added `w-full` and `flex-grow` to the main element. */}
+      <main className="w-full flex-grow max-w-7xl">
+        {children}
+      </main>
     </div>
   );
 }
