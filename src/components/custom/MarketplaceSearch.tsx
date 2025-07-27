@@ -29,7 +29,8 @@ export function MarketplaceSearch({
     onSearch 
 }: MarketplaceSearchProps) {
     return (
-        <div className="bg-amber-50 p-6 rounded-lg border border-amber-200">
+        <div className="w-full">
+        <div className="bg-card p-6 rounded-lg border max-w-7xl">
             <h2 className="text-xl font-bold mb-4 text-gray-800">Find Products for Your Shop</h2>
             <div className="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                 {/* Search Input */}
@@ -58,13 +59,14 @@ export function MarketplaceSearch({
                 <div className="md:col-span-2">
                     <Button 
                         size="lg" 
-                        className="w-full h-12 bg-amber-800 hover:bg-amber-900 text-white"
+                        className="w-full h-12 bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]"
                         onClick={onSearch}
                     >
                         Find Products
                     </Button>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

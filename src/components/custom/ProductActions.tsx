@@ -36,7 +36,7 @@ export function ProductActions({ product }: ProductActionsProps) {
                     <Plus className="h-4 w-4" />
                 </Button>
             </div>
-            <Button size="lg" className="flex-grow" onClick={handleAddToCart}>
+            <Button size="lg" className="flex-grow bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" onClick={handleAddToCart}>
                 Add {quantity} to Cart
             </Button>
         </div>

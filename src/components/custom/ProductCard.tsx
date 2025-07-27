@@ -23,8 +23,8 @@ export function ProductCard({ product, onSelect, isSelected }: ProductCardProps)
   return (
     <Card
       className={cn(
-        "cursor-pointer transition-all duration-200 hover:bg-amber-50 w-full",
-        isSelected ? "bg-amber-100 border-amber-400" : "border-transparent"
+        "cursor-pointer transition-all duration-200 hover:bg-[#BEA093]/70 w-full",
+        isSelected ? "bg-[#FDFBF4] border" : "border-transparent"
       )}
       onClick={onSelect}
     >

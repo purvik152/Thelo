@@ -113,46 +113,47 @@ export default function CheckoutPage() {
         }
     };
 
+    
     return (
-        <>
+        <div className="flex flex-col items-center">
             <Navbar />
-            <div className="container mx-auto py-8 lg:py-16">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16">
+            <div className="container mx-auto py-8 lg:py-16 bg-white">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 px-16">
                     {/* Left Column: Form */}
                     <div className="lg:col-span-7">
                         <div className="space-y-8">
                              <div>
                                 <h2 className="text-xl font-semibold mb-4">Contact Information</h2>
-                                {isLoading ? <Skeleton className="h-12 w-full" /> : <Input type="email" placeholder="Email" value={user?.email ?? ''} disabled />}
+                                {isLoading ? <Skeleton className="h-12 w-full" /> : <Input type="email" placeholder="Email" value={user?.email ?? ''} className="bg-[#FDFBF4]" disabled />}
                              </div>
 
                              <div>
                                 <h2 className="text-xl font-semibold mb-4">Shipping Address</h2>
                                 <div className="space-y-4">
                                     <div className="grid grid-cols-2 gap-4">
-                                        {isLoading ? <Skeleton className="h-12 w-full" /> : <Input type="text" placeholder="First Name" value={user?.firstName ?? ''} disabled />}
-                                        {isLoading ? <Skeleton className="h-12 w-full" /> : <Input type="text" placeholder="Last Name" value={user?.lastName ?? ''} disabled />}
+                                        {isLoading ? <Skeleton className="h-12 w-full" /> : <Input type="text" placeholder="First Name" value={user?.firstName ?? ''} className="bg-[#FDFBF4]" disabled />}
+                                        {isLoading ? <Skeleton className="h-12 w-full" /> : <Input type="text" placeholder="Last Name" value={user?.lastName ?? ''} className="bg-[#FDFBF4]" disabled />}
                                     </div>
                                     <div>
-                                        <Input type="tel" placeholder="Phone" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
+                                        <Input type="tel" pattern="[0-9]*" maxLength={10} placeholder="Phone" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value.replace(/[^0-9]/g, ''))} className="bg-[#FDFBF4]"/>
                                         {errors.mobileNumber && <p className="text-red-500 text-xs mt-1">{errors.mobileNumber}</p>}
                                     </div>
                                     <div>
-                                        <Input type="text" placeholder="Address" value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} />
+                                        <Input type="text" placeholder="Address" value={streetAddress} onChange={(e) => setStreetAddress(e.target.value)} className="bg-[#FDFBF4]"/>
                                         {errors.streetAddress && <p className="text-red-500 text-xs mt-1">{errors.streetAddress}</p>}
                                     </div>
-                                    <Input type="text" placeholder="Apartment, suite, etc. (optional)" value={aptSuite} onChange={(e) => setAptSuite(e.target.value)} />
+                                    <Input type="text" placeholder="Apartment, suite, etc. (optional)" value={aptSuite} onChange={(e) => setAptSuite(e.target.value)} className="bg-[#FDFBF4]"/>
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <div>
-                                            <Input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} />
+                                            <Input type="text" placeholder="City" value={city} onChange={(e) => setCity(e.target.value)} className="bg-[#FDFBF4]"/>
                                             {errors.city && <p className="text-red-500 text-xs mt-1">{errors.city}</p>}
                                         </div>
                                         <div>
-                                            <Input type="text" placeholder="State" value={state} onChange={(e) => setState(e.target.value)} />
+                                            <Input type="text" placeholder="State" value={state} onChange={(e) => setState(e.target.value)} className="bg-[#FDFBF4]"/>
                                             {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                                         </div>
                                         <div>
-                                            <Input type="text" placeholder="ZIP code" value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
+                                            <Input type="text" placeholder="ZIP code" value={zipCode} onChange={(e) => setZipCode(e.target.value)} className="bg-[#FDFBF4]"/>
                                             {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
                                         </div>
                                     </div>
@@ -161,7 +162,7 @@ export default function CheckoutPage() {
 
                              <div>
                                  <h2 className="text-xl font-semibold mb-4">Payment Method</h2>
-                                 <div className="border rounded-md p-4">
+                                 <div className="border rounded-md p-4 bg-[#FDFBF4]">
                                      <p className="font-medium">Cash on Delivery</p>
                                      <p className="text-sm text-muted-foreground">Pay with cash upon receiving your order.</p>
                                  </div>
@@ -171,7 +172,7 @@ export default function CheckoutPage() {
 
                     {/* Right Column: Cart Summary */}
                     <div className="lg:col-span-5">
-                        <div className="sticky top-24 border rounded-lg bg-gray-50 p-6">
+                        <div className="sticky top-24 border rounded-lg p-6 bg-[#FBF3E5]">
                             <h2 className="text-xl font-semibold mb-4 border-b pb-4">Order Summary</h2>
                             <div className="space-y-4 max-h-64 overflow-y-auto">
                                 {cartItems.map(item => (
@@ -197,7 +198,7 @@ export default function CheckoutPage() {
                             </div>
                             <Button 
                                 size="lg" 
-                                className="w-full mt-6"
+                                className="w-full mt-6 bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]"
                                 onClick={handlePlaceOrder}
                                 disabled={isPlacingOrder || cartItems.length === 0}
                             >
@@ -207,6 +208,6 @@ export default function CheckoutPage() {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }
