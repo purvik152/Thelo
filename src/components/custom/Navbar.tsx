@@ -9,13 +9,14 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTr
 import { ShoppingCart, User, LogOut, Package } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 
+// Make sure 'export' is here
 export function Navbar() {
   const router = useRouter();
   const { cartItems } = useCart();
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout');
-    router.push('/login');
+    router.push('/'); // Redirect to homepage after logout
   };
 
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -88,7 +89,9 @@ export function Navbar() {
                               <span>Subtotal</span>
                               <span>₹{subtotal.toFixed(2)}</span>
                           </div>
-                          <Button size="lg" className="w-full">Proceed to Checkout</Button>
+                          <Button size="lg" className="w-full" asChild>
+                            <Link href="/checkout">Proceed to Checkout</Link>
+                          </Button>
                        </div>
                     </SheetFooter>
                   </>
