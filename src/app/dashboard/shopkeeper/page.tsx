@@ -1,118 +1,136 @@
-/*
-* =================================================================================================
-* FILE: src/app/dashboard/shopkeeper/page.tsx
-*
-* ACTION: Replace the code in this file.
-* This is the new Shopkeeper Marketplace, featuring a two-column layout with a
-* product list on the left and a detailed view on the right.
-* =================================================================================================
-*/
 "use client";
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
-import { ProductCard, Product } from '@/components/custom/ProductCard'; // Updated import
 import { Skeleton } from "@/components/ui/skeleton";
+import { ProductCard } from '@/components/custom/ProductCard';
+import { MarketplaceSearch } from '@/components/custom/MarketplaceSearch';
+import { ProductActions } from '@/components/custom/ProductActions';
+import { IProduct } from '@/models/Product';
+import { Toaster, toast } from 'sonner';
+
+// Interface for product data including the seller's details
+interface PopulatedSeller {
+  _id: string;
+  brandName: string;
+}
+
+interface PopulatedProduct extends Omit<IProduct, 'seller'> {
+  _id: string; // Ensure _id is a string
+  seller: PopulatedSeller | null;
+}
 
 // A new component for the right-side detail view
-function ProductDetailView({ product }: { product: Product }) {
+function ProductDetailView({ product }: { product: PopulatedProduct }) {
   return (
-    <div className="sticky top-24"> {/* Makes the right column "stick" while scrolling */}
-      <div className="border rounded-lg overflow-hidden">
-        <div className="relative w-full h-64">
+    <div className="sticky top-24"> {/* Makes the right column "stick" */}
+        <div className="relative w-full h-80 mb-6 rounded-lg overflow-hidden">
           <Image
-            src={product.imageUrl || 'https://placehold.co/600x400/e2e8f0/475569?text=Image'}
+            src={product.imageUrl || 'https://placehold.co/800x600/e2e8f0/475569?text=Image'}
             alt={product.name}
             fill
             className="object-cover"
           />
         </div>
-        <div className="p-6">
-            <h2 className="text-2xl font-bold">{product.name}</h2>
-            <p className="text-md text-muted-foreground mb-2">by {product.seller?.brandName || 'Unknown Seller'}</p>
-            <p className="text-3xl font-bold text-primary my-4">₹{product.price.toFixed(2)}</p>
-            
-            <div className="text-sm space-y-2 my-4">
-              <p><span className="font-semibold">Location:</span> {product.location}</p>
-              <p><span className="font-semibold">Category:</span> {product.category}</p>
-              <p><span className="font-semibold">Stock:</span> {product.stock > 0 ? `${product.stock} units available` : 'Out of Stock'}</p>
-            </div>
+        <h2 className="text-3xl font-bold">{product.name}</h2>
+        <p className="text-lg text-muted-foreground mb-4">by {product.seller?.brandName ?? 'Unknown Seller'}</p>
+        <p className="text-4xl font-bold text-primary my-4">₹{product.price.toFixed(2)}</p>
 
-            <p className="text-sm text-foreground leading-relaxed my-4">{product.description}</p>
-            
-            <Button size="lg" className="w-full mt-2">Add to Cart</Button>
+        <div className="text-md space-y-3 my-6 border-t pt-6">
+          <p><span className="font-semibold text-muted-foreground">Location:</span> {product.location}</p>
+          <p><span className="font-semibold text-muted-foreground">Category:</span> {product.category}</p>
+          <p><span className="font-semibold text-muted-foreground">Stock:</span> {product.stock > 0 ? `${product.stock} units available` : 'Out of Stock'}</p>
         </div>
-      </div>
+
+        <p className="text-md text-foreground leading-relaxed my-4">{product.description}</p>
+        
+        <ProductActions product={product} />
     </div>
   );
 }
 
 export default function ShopkeeperMarketplace() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [products, setProducts] = useState<PopulatedProduct[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<PopulatedProduct | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [location, setLocation] = useState('');
+
+  const fetchProducts = async (searchQuery = '', locationQuery = '') => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/products?search=${searchQuery}&location=${locationQuery}`);
+      const data = await response.json();
+      if (data.success) {
+        setProducts(data.products);
+        if (data.products.length > 0) {
+            setSelectedProduct(data.products[0]); // Select the first product
+        } else {
+            setSelectedProduct(null); // Clear selection if no products
+            toast.info("No products found for your search.");
+        }
+      } else {
+        toast.error("Failed to fetch products.");
+      }
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+      toast.error("An error occurred while fetching products.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
-    async function fetchProducts() {
-      try {
-        setIsLoading(true);
-        const response = await fetch('/api/products');
-        const data = await response.json();
-        if (data.success && data.products.length > 0) {
-          setProducts(data.products);
-          setSelectedProduct(data.products[0]); // Select the first product by default
-        }
-      } catch (error) {
-        console.error("Failed to fetch products:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    }
     fetchProducts();
   }, []);
 
+  const handleSearch = () => {
+    fetchProducts(searchTerm, location);
+  };
+
   return (
     <main className="container mx-auto py-8">
-      <div className="mb-8 relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-        <Input placeholder="Search by product name, category..." className="pl-10 h-12 text-lg" />
+      <Toaster richColors />
+      <div className="mb-8">
+        <MarketplaceSearch 
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            location={location}
+            setLocation={setLocation}
+            onSearch={handleSearch}
+        />
       </div>
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Left Column: Product List */}
         <div className="lg:col-span-5 xl:col-span-4">
-          <div className="space-y-4">
+          <div className="space-y-2">
             {isLoading ? (
-              Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-28 w-full rounded-lg" />)
+              Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-20 w-full rounded-lg" />)
             ) : products.length > 0 ? (
               products.map((product) => (
-                <ProductCard 
-                  key={product._id} 
-                  product={product} 
+                <ProductCard
+                  key={String(product._id)}
+                  product={product}
                   isSelected={selectedProduct?._id === product._id}
                   onSelect={() => setSelectedProduct(product)}
                 />
               ))
             ) : (
-              <div className="flex h-full items-center justify-center text-muted-foreground p-8 border rounded-lg">
-                <p>No products found.</p>
-              </div>
+              <p className="text-center py-10 text-muted-foreground">No products found.</p>
             )}
           </div>
         </div>
-        
+
         {/* Right Column: Product Detail */}
         <div className="lg:col-span-7 xl:col-span-8">
           {isLoading ? (
-            <Skeleton className="h-[600px] w-full rounded-lg" />
+            <Skeleton className="h-[800px] w-full rounded-lg" />
           ) : selectedProduct ? (
             <ProductDetailView product={selectedProduct} />
           ) : (
-             <div className="flex h-full items-center justify-center text-muted-foreground p-8 border rounded-lg">
-               <p>Select a product to see details.</p>
+             <div className="flex h-full items-center justify-center text-muted-foreground">
+                <p>Select a product to see details.</p>
              </div>
           )}
         </div>

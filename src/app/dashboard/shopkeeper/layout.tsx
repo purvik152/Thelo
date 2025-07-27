@@ -2,11 +2,11 @@
 * =================================================================================================
 * FILE: src/app/dashboard/shopkeeper/layout.tsx
 *
-* This layout wraps all pages inside the /shopkeeper route.
-* It ensures the Navbar is always present.
+* ACTION: Replace the code in this file.
+* The incorrect import for './globals.css' has been removed.
 * =================================================================================================
 */
-import { Navbar } from "@/components/custom/Navbar";
+import { Navbar } from '@/components/custom/Navbar';
 
 export default function ShopkeeperLayout({
   children,
@@ -14,9 +14,9 @@ export default function ShopkeeperLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-muted/40">
+    <div>
       <Navbar />
-      <main>{children}</main>
+      {children}
     </div>
   );
 }

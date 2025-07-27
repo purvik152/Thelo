@@ -1,63 +1,48 @@
-/*
-* =================================================================================================
-* FILE: src/components/custom/ProductCard.tsx
-*
-* ACTION: Replace the code in this file.
-* This is the updated, interactive version of your ProductCard. It is now designed
-* to be used as a selectable item in a list.
-* =================================================================================================
-*/
-import { Card, CardContent } from "@/components/ui/card";
-import Image from "next/image";
-import { cn } from "@/lib/utils"; // Import the cn utility
+import Image from 'next/image';
+import { Card, CardTitle } from "@/components/ui/card";
+import { cn } from '@/lib/utils';
+import { IProduct } from '@/models/Product';
 
-// This is our main Product interface for the frontend
-export interface Product {
+// Interface for product data including the seller's details
+interface PopulatedSeller {
   _id: string;
-  name: string;
-  price: number;
-  imageUrl?: string;
-  description: string;
-  category: string;
-  location: string;
-  stock: number;
-  seller: {
-    brandName: string;
-  } | null;
+  brandName: string;
+}
+
+interface PopulatedProduct extends Omit<IProduct, 'seller'> {
+  seller: PopulatedSeller | null;
 }
 
 interface ProductCardProps {
-  product: Product;
-  isSelected: boolean;
+  product: PopulatedProduct;
   onSelect: () => void;
+  isSelected: boolean;
 }
 
-export function ProductCard({ product, isSelected, onSelect }: ProductCardProps) {
-  const brandName = product.seller?.brandName || 'Unknown Seller';
-
+export function ProductCard({ product, onSelect, isSelected }: ProductCardProps) {
   return (
     <Card
-      onClick={onSelect}
       className={cn(
-        "cursor-pointer transition-all duration-200 hover:shadow-md",
-        isSelected ? "border-primary shadow-md" : "border-border"
+        "cursor-pointer transition-all duration-200 hover:bg-amber-50 w-full",
+        isSelected ? "bg-amber-100 border-amber-400" : "border-transparent"
       )}
+      onClick={onSelect}
     >
-      <CardContent className="p-3 flex items-start gap-4">
-        <div className="relative aspect-square w-24 rounded-md overflow-hidden flex-shrink-0">
+      <div className="flex items-center space-x-4 p-3">
+        <div className="relative w-16 h-16 flex-shrink-0">
           <Image
-            src={product.imageUrl || 'https://placehold.co/100x100/e2e8f0/475569?text=Image'}
+            src={product.imageUrl || 'https://placehold.co/64x64/e2e8f0/475569?text=Img'}
             alt={product.name}
             fill
-            className="object-cover"
+            className="rounded-md object-cover"
           />
         </div>
-        <div className="flex flex-col justify-center flex-grow">
-          <h3 className="font-semibold text-md leading-tight">{product.name}</h3>
-          <p className="text-sm text-muted-foreground">by {brandName}</p>
-          <p className="text-lg font-bold mt-2">₹{product.price.toFixed(2)}</p>
+        <div className="flex-grow overflow-hidden">
+          <CardTitle className="text-sm font-bold truncate">{product.name}</CardTitle>
+          <p className="text-xs text-muted-foreground truncate">by {product.seller?.brandName ?? 'Unknown Seller'}</p>
+          <p className="text-md font-bold mt-1">₹{product.price.toFixed(2)}</p>
         </div>
-      </CardContent>
+      </div>
     </Card>
   );
 }
