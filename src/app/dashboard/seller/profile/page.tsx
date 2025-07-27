@@ -53,19 +53,21 @@ export default function SellerProfilePage() {
 
     if (isLoading) {
         return (
-            <div className="container py-12 max-w-3xl">
-                <Card>
-                    <CardHeader>
-                        <Skeleton className="h-8 w-56" />
-                        <Skeleton className="h-4 w-72 mt-2" />
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                        <Skeleton className="h-16 w-full" />
-                        <Skeleton className="h-16 w-full" />
-                        <Skeleton className="h-16 w-full" />
-                        <Skeleton className="h-16 w-full" />
-                    </CardContent>
-                </Card>
+            <div className="flex flex-col items-center">
+                <div className="container py-12 max-w-3xl">
+                    <Card>
+                        <CardHeader>
+                            <Skeleton className="h-8 w-56" />
+                            <Skeleton className="h-4 w-72 mt-2" />
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                            <Skeleton className="h-16 w-full" />
+                            <Skeleton className="h-16 w-full" />
+                            <Skeleton className="h-16 w-full" />
+                            <Skeleton className="h-16 w-full" />
+                        </CardContent>
+                    </Card>
+                </div>
             </div>
         );
     }
@@ -75,52 +77,58 @@ export default function SellerProfilePage() {
     }
 
     return (
-        <div className="container py-12 max-w-3xl">
-            <Card className="overflow-hidden">
-                <CardHeader className="bg-muted/50">
-                    <CardTitle className="text-3xl">Seller Profile</CardTitle>
-                    <CardDescription>Your account and business details.</CardDescription>
-                </CardHeader>
-                <CardContent className="p-6">
-                    <div className="mb-6">
-                        <h3 className="text-lg font-medium text-muted-foreground mb-2">Account Information</h3>
-                        <ProfileDetailRow 
-                            icon={<User className="h-5 w-5" />} 
-                            label="Full Name" 
-                            value={`${profile.user.firstName} ${profile.user.lastName}`} 
-                        />
-                        <ProfileDetailRow 
-                            icon={<Mail className="h-5 w-5" />} 
-                            label="Email Address" 
-                            value={profile.user.email} 
-                        />
-                         
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-medium text-muted-foreground mb-2">Business Information</h3>
-                        <ProfileDetailRow 
-                            icon={<Building className="h-5 w-5" />} 
-                            label="Brand Name" 
-                            value={profile.brandName} 
-                        />
-                         <ProfileDetailRow 
-                            icon={<Building className="h-5 w-5" />} 
-                            label="Business Address" 
-                            value={profile.businessAddress} 
-                        />
-                        <ProfileDetailRow 
-                            icon={<Hash className="h-5 w-5" />} 
-                            label="GST Number" 
-                            value={profile.gstNumber} 
-                        />
-                         <ProfileDetailRow 
-                            icon={<Info className="h-5 w-5" />} 
-                            label="About Your Business" 
-                            value={profile.bio || "Not provided"} 
-                        />
-                    </div>
-                </CardContent>
-            </Card>
+        <div className="w-full px-4 flex flex-col items-center">
+            <div className="container py-12 max-w-3xl">
+                <Card className="overflow-hidden">
+                    <CardHeader className="bg-muted/50">
+                        <CardTitle className="text-3xl">Seller Profile</CardTitle>
+                        <CardDescription>Your account and business details.</CardDescription>
+                    </CardHeader>
+                    <CardContent className="p-6">
+                        <div className="mb-6">
+                            <h3 className="text-lg font-medium text-muted-foreground mb-2">Account Information</h3>
+                            <div className="grid grid-cols-2">
+                                <ProfileDetailRow 
+                                    icon={<User className="h-5 w-5" />} 
+                                    label="Full Name" 
+                                    value={`${profile.user.firstName} ${profile.user.lastName}`} 
+                                />
+                                <ProfileDetailRow 
+                                    icon={<Mail className="h-5 w-5" />} 
+                                    label="Email Address" 
+                                    value={profile.user.email} 
+                                />
+                            </div>
+                            
+                        </div>
+                        <div>
+                            <h3 className="text-lg font-medium text-muted-foreground mb-2">Business Information</h3>
+                            <div className="grid grid-cols-2">
+                                <ProfileDetailRow 
+                                    icon={<Building className="h-5 w-5" />} 
+                                    label="Brand Name" 
+                                    value={profile.brandName} 
+                                />
+                                <ProfileDetailRow 
+                                    icon={<Building className="h-5 w-5" />} 
+                                    label="Business Address" 
+                                    value={profile.businessAddress} 
+                                />
+                                <ProfileDetailRow 
+                                    icon={<Hash className="h-5 w-5" />} 
+                                    label="GST Number" 
+                                    value={profile.gstNumber} 
+                                />
+                                <ProfileDetailRow 
+                                    icon={<Info className="h-5 w-5" />} 
+                                    label="About Your Business" 
+                                    value={profile.bio || "Not provided"} 
+                                />
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     );
 }
