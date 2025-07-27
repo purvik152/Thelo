@@ -69,7 +69,9 @@ export function LoginPageComponent() {
     <Card className="border-0 shadow-none">
       <CardHeader>
         <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>Enter your email to access your dashboard.</CardDescription>
+        <CardDescription>
+          Enter your email to access your dashboard.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleLogin}>
@@ -83,7 +85,12 @@ export function LoginPageComponent() {
               <Input id="password" name="password" type="password" required />
             </div>
             {error && <FormMessage type="error" message={error} />}
-            <Button type="submit" disabled={loading} className="w-full ...">
+            <Button
+              type="submit"
+              disabled={loading}
+              aria-busy={loading}
+              className="w-full bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]"
+            >
               {loading ? "Logging in..." : "Login"}
             </Button>
           </div>

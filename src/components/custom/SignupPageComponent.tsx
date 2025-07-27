@@ -105,8 +105,13 @@ export function SignupPageComponent() {
             </div>
             <div className="grid gap-2">
               <Label htmlFor="role">I am a...</Label>
-              <Select defaultValue={role} onValueChange={(val) => setRole(val as SignupFormData["role"])}>
-                <SelectTrigger><SelectValue placeholder="Select your role" /></SelectTrigger>
+              <Select
+                value={role}
+                onValueChange={(val) => setRole(val as SignupFormData["role"])}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select your role" />
+                </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="shopkeeper">Shopkeeper</SelectItem>
                   <SelectItem value="seller">Seller</SelectItem>
@@ -114,7 +119,12 @@ export function SignupPageComponent() {
               </Select>
             </div>
             {error && <FormMessage type="error" message={error} />}
-            <Button type="submit" disabled={loading} className="w-full ...">
+            <Button
+              type="submit"
+              disabled={loading}
+              aria-busy={loading}
+              className="w-full bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]"
+            >
               {loading ? "Creating Account..." : "Create an account"}
             </Button>
           </div>

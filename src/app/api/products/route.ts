@@ -5,7 +5,26 @@ import Product from '@/models/Product';
 import SellerProfile from '@/models/SellerProfile';
 import { cookies } from 'next/headers';
 
-interface DecodedToken { id: string; role: string; }
+interface DecodedToken {
+  id: string;
+  role: string;
+}
+
+interface ProductPostBody {
+  name: string;
+  description: string;
+  price: number;
+  category: string;
+  stock: number;
+  location: string;
+  imageUrl: string;
+}
+
+interface ProductQuery {
+  status: 'Active';
+  $or?: Array<{ name: { $regex: string; $options: string } } | { category: { $regex: string; $options: string } }>;
+  location?: { $regex: string; $options: string };
+}
 
 export const config = { api: { bodyParser: { sizeLimit: '5mb' } } };
 
@@ -13,7 +32,7 @@ export async function POST(request: NextRequest) {
   await dbConnect();
 
   try {
-    const token = (await cookies()).get('token')?.value;
+    const token = cookies().get('token')?.value;
     if (!token) return NextResponse.json({ message: 'Not authenticated' }, { status: 401 });
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
@@ -22,7 +41,7 @@ export async function POST(request: NextRequest) {
     const sellerProfile = await SellerProfile.findOne({ user: decoded.id });
     if (!sellerProfile) return NextResponse.json({ message: 'Seller profile missing' }, { status: 404 });
 
-    const body = await request.json();
+    const body = (await request.json()) as ProductPostBody;
     const { name, description, price, category, stock, location, imageUrl } = body;
 
     const newProduct = new Product({
@@ -34,8 +53,9 @@ export async function POST(request: NextRequest) {
       stock,
       location,
       status: 'Active',
-      imageUrl
+      imageUrl,
     });
+
     await newProduct.save();
 
     return NextResponse.json({ message: 'Product added!', product: newProduct }, { status: 201 });
@@ -50,10 +70,10 @@ export async function GET(request: NextRequest) {
 
   try {
     const url = new URL(request.url);
-    const search = url.searchParams.get('search') || undefined;
-    const location = url.searchParams.get('location') || undefined;
+    const search = url.searchParams.get('search') ?? undefined;
+    const location = url.searchParams.get('location') ?? undefined;
 
-    const query: { [key: string]: any } = { status: 'Active' };
+    const query: ProductQuery = { status: 'Active' };
 
     if (search) {
       query.$or = [
@@ -61,6 +81,7 @@ export async function GET(request: NextRequest) {
         { category: { $regex: search, $options: 'i' } },
       ];
     }
+
     if (location) {
       query.location = { $regex: location, $options: 'i' };
     }
