@@ -40,7 +40,7 @@ function IntroAnimation({ onFinished }: { onFinished: () => void }) {
     }, [currentIndex, onFinished, icons.length]);
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-background z-[100]">
+        <div className="fixed inset-0 flex items-center justify-center bg-[#FBF3E5] z-[100]">
             <div className="relative w-24 h-24 flex items-center justify-center">
                 {icons.map((icon, index) => (
                     <div
@@ -77,8 +77,9 @@ function HomePageContent() {
   return (
     <div className="flex flex-col min-h-screen bg-white">
       {/* Header */}
-      <header className="navigationbar sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 items-center justify-between px-4 md:px-6">
+      <header className="navigationbar sticky top-2 z-40 w-full border rounded-lg  bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        {/* FIX: Added `mx-auto` to center the container */}
+        <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
           <Link href="/" className="flex items-center space-x-2">
             <span className="font-bold text-lg">
                 <div>
@@ -98,8 +99,10 @@ function HomePageContent() {
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 md:py-32 bg-[#FBF3E5]">
-          <div className="container text-center px-4 md:px-6">
+      <div className="bg-[url(/FinalLogo-withoutBG.png)] bg-cover bg-center">
+      <section className="py-20 md:py-32 bg-[#FBF3E5]/95">
+          {/* FIX: Added `mx-auto` to center the container */}
+          <div className="container mx-auto text-center px-4 md:px-6">
               <h1 className="text-5xl md:text-7xl font-extrabold tracking-tighter text-gray-900">
                   Directly from the Source.
               </h1>
@@ -109,7 +112,7 @@ function HomePageContent() {
               <p className="mt-8 max-w-3xl mx-auto text-lg md:text-xl text-gray-600">
                   The definitive B2B marketplace for India's finest raw food materials. We bridge the gap between producers and businesses, ensuring quality, transparency, and growth.
               </p>
-              <div className="mt-10 flex justify-center gap-4">
+              <div className="mt-10 flex flex-wrap justify-center gap-4">
                   <Button size="lg" className="h-12 px-8 text-base bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" asChild>
                       <Link href="/?modal=signup">Become a Seller</Link>
                   </Button>
@@ -119,15 +122,17 @@ function HomePageContent() {
               </div>
           </div>
       </section>
+      </div>
 
       {/* Featured Categories Section */}
       <section className="py-20 md:py-28 bg-[#FDFBF4] ">
-        <div className="container px-4 md:px-6">
+        {/* FIX: Added `mx-auto` to center the container */}
+        <div className="container mx-auto px-4 md:px-6">
             <div className="text-center mb-16">
                 <h2 className="text-4xl font-bold tracking-tight">Explore Our Categories</h2>
                 <p className="mt-3 text-lg text-muted-foreground">Find exactly what you need from our wide range of raw materials.</p>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                 {categories.map((cat) => (
                     <div key={cat.name} className="p-6 rounded-xl border bg-card text-card-foreground text-center hover:shadow-lg transition-shadow">
                         <div className={`mx-auto flex h-16 w-16 items-center justify-center rounded-full ${cat.color} mb-5`}>
@@ -142,7 +147,8 @@ function HomePageContent() {
       
       {/* How It Works Section */}
       <section className="py-20 md:py-28 bg-[#FBF3E5]">
-          <div className="container px-4 md:px-6 text-center">
+          {/* FIX: Added `mx-auto` to center the container */}
+          <div className="container mx-auto px-4 md:px-6 text-center">
               <h2 className="text-4xl font-bold tracking-tight">A Simple, Transparent Process</h2>
               <p className="mt-3 text-lg text-muted-foreground">Connecting buyers and sellers in just 3 easy steps.</p>
               <div className="mt-20 relative grid md:grid-cols-3 gap-y-16 md:gap-x-16">
@@ -171,7 +177,8 @@ function HomePageContent() {
 
       {/* Footer */}
       <footer className="py-12 bg-[#BEA093] text-gray-400">
-          <div className="container px-4 md:px-6 text-center text-black">
+          {/* FIX: Added `mx-auto` to center the container */}
+          <div className="container mx-auto px-4 md:px-6 text-center text-white">
               <p>&copy; 2025 Thelo. A new era of B2B trade in India.</p>
           </div>
       </footer>
