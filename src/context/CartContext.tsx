@@ -1,23 +1,17 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 
-interface Product {
-    _id: string;
-    name: string;
-    price: number;
-    imageUrl?: string;
-}
+// ... (interfaces remain the same)
+interface Product { _id: string; name: string; price: number; imageUrl?: string; }
+interface CartItem { product: Product; quantity: number; }
 
-interface CartItem {
-    product: Product;
-    quantity: number;
-}
-
+// --- 1. ADD clearCart TO THE TYPE ---
 interface CartContextType {
     cartItems: CartItem[];
     addToCart: (product: Product, quantity: number) => void;
+    clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -42,8 +36,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
         });
     };
 
+    // --- 2. ADD THE clearCart FUNCTION ---
+    const clearCart = () => {
+        setCartItems([]);
+    };
+
     return (
-        <CartContext.Provider value={{ cartItems, addToCart }}>
+        // --- 3. ADD clearCart TO THE PROVIDER'S VALUE ---
+        <CartContext.Provider value={{ cartItems, addToCart, clearCart }}>
             {children}
         </CartContext.Provider>
     );
