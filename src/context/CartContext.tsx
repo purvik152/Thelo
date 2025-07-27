@@ -28,7 +28,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     const addToCart = (product: Product, quantity: number) => {
         setCartItems(prevItems => {
             const existingItem = prevItems.find(item => item.product._id === product._id);
-            // This line triggers the notification
             toast.success(`Added ${quantity} x ${product.name} to cart!`);
 
             if (existingItem) {
@@ -46,7 +45,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     return (
         <CartContext.Provider value={{ cartItems, addToCart }}>
             {children}
-            <Toaster richColors position="top-right" />
         </CartContext.Provider>
     );
 }
