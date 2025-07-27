@@ -1,12 +1,3 @@
-/*
-* =================================================================================================
-* FILE: src/lib/dbConnect.ts
-*
-* ACTION: Replace the code in this file.
-* This version fixes the 'any' type errors by providing a more specific type
-* for the global mongoose cache.
-* =================================================================================================
-*/
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -17,21 +8,12 @@ if (!MONGODB_URI) {
   );
 }
 
-// FIX: Define a more specific type for our cached connection object
-interface MongooseCache {
-  conn: typeof mongoose | null;
-  promise: Promise<typeof mongoose> | null;
-}
-
-// FIX: Declare a global variable to hold our cache
-declare global {
-  var mongoose: MongooseCache;
-}
-
-let cached = global.mongoose;
+// We use a global variable to cache the connection. This prevents creating a new
+// connection on every API call in a serverless environment.
+let cached = (global as any).mongoose;
 
 if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
+  cached = (global as any).mongoose = { conn: null, promise: null };
 }
 
 async function dbConnect() {
