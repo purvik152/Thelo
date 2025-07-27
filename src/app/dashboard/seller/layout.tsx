@@ -16,9 +16,9 @@ export default function SellerLayout({
   return (
     // FIX: Removed `items-center` to allow children to expand to full width.
     <div className="min-h-screen flex flex-col items-center  bg-muted/40">
-      <div className="w-full mx-4">
+      
         <SellerNavbar />
-      </div>
+      
       {/* FIX: Added `w-full` and `flex-grow` to the main element. */}
       <main className="w-full flex-grow max-w-7xl">
         {children}
