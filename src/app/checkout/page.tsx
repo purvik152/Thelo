@@ -153,7 +153,7 @@ export default function CheckoutPage() {
                                             {errors.state && <p className="text-red-500 text-xs mt-1">{errors.state}</p>}
                                         </div>
                                         <div>
-                                            <Input type="text" placeholder="ZIP code" value={zipCode} onChange={(e) => setZipCode(e.target.value)} className="bg-[#FDFBF4]"/>
+                                            <Input type="text" placeholder="ZIP code" maxLength={6} value={zipCode} onChange={(e) => setZipCode(e.target.value.replace(/[^0-9]/g, ''))} className="bg-[#FDFBF4]"/>
                                             {errors.zipCode && <p className="text-red-500 text-xs mt-1">{errors.zipCode}</p>}
                                         </div>
                                     </div>

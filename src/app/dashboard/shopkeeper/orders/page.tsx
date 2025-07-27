@@ -87,7 +87,7 @@ export default function MyOrdersPage() {
                             </CardHeader>
                             <CardContent className="p-4 ">
                                 {order.items.map(item => (
-                                    <div key={item.product._id} className="flex items-center gap-10 py-0 px-6 border-b last:border-b-0">
+                                    <div key={item.product._id} className="flex items-center gap-10 py-0 px-6 border-b last:border-b-0 mb-2 pb-2">
                                         <Image 
                                             src={item.product.imageUrl || 'https://placehold.co/64x64'}
                                             alt={item.product.name}
