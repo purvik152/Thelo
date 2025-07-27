@@ -28,8 +28,10 @@ export default function MyOrdersPage() {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
+        // This function runs every time the page is loaded
         async function fetchOrders() {
             try {
+                // It calls the API to get the most up-to-date order list
                 const response = await fetch('/api/orders/my-orders');
                 const data = await response.json();
                 if (data.success) {
@@ -42,9 +44,9 @@ export default function MyOrdersPage() {
             }
         }
         fetchOrders();
-    }, []);
+    }, []); // The empty array means this runs once when the component mounts
 
-    // A helper to choose the badge color based on order status
+    // This helper function chooses the badge color based on the status from the database
     const getBadgeVariant = (status: string): "secondary" | "default" | "destructive" | "outline" => {
         switch (status) {
             case 'Pending': return 'secondary';
