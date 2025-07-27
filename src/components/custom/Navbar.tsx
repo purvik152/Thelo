@@ -1,26 +1,26 @@
+/*
+* =================================================================================================
+* FILE: src/components/custom/Navbar.tsx
+*
+* ACTION: Verify or replace the code in this file.
+* =================================================================================================
+*/
 "use client";
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetFooter } from '@/components/ui/sheet';
 import { ShoppingCart, User, LogOut, Package } from 'lucide-react';
-import { useCart } from '@/context/CartContext'; // Import the useCart hook
 
 export function Navbar() {
   const router = useRouter();
-  const { cartItems } = useCart(); // Get cart items from the context
 
   const handleLogout = async () => {
-    await fetch('/api/auth/logout');
-    router.push('/login');
+    // This API route will need to be created to clear the cookie
+    await fetch('/api/auth/logout', { method: 'POST' });
+    router.push('/');
   };
-
-  // Calculate total items and subtotal for display
-  const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
-  const subtotal = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -41,65 +41,10 @@ export function Navbar() {
         </div>
 
         <div className="flex flex-1 items-center justify-end space-x-2">
-          {/* Cart Sidebar Implementation */}
-          <Sheet>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
-                {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                    {cartItemCount}
-                  </span>
-                )}
-                <ShoppingCart className="h-5 w-5" />
-                <span className="sr-only">Shopping Cart</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent>
-              <SheetHeader>
-                <SheetTitle>Your Cart</SheetTitle>
-              </SheetHeader>
-              <div className="mt-4 flex flex-col h-full">
-                {cartItems.length > 0 ? (
-                  <>
-                    <div className="flex-grow overflow-y-auto pr-4">
-                      {cartItems.map(item => (
-                        <div key={item.product._id} className="flex items-center gap-4 py-4">
-                          <Image
-                            src={item.product.imageUrl || 'https://placehold.co/64x64'}
-                            alt={item.product.name}
-                            width={64}
-                            height={64}
-                            className="rounded-md"
-                          />
-                          <div className="flex-grow">
-                            <p className="font-semibold">{item.product.name}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {item.quantity} x ${item.product.price.toFixed(2)}
-                            </p>
-                          </div>
-                          <p className="font-bold">
-                            ${(item.product.price * item.quantity).toFixed(2)}
-                          </p>
-                        </div>
-                      ))}
-                    </div>
-                    <SheetFooter className="mt-auto border-t pt-4">
-                       <div className="w-full">
-                          <div className="flex justify-between font-bold text-lg mb-4">
-                              <span>Subtotal</span>
-                              <span>${subtotal.toFixed(2)}</span>
-                          </div>
-                          <Button size="lg" className="w-full">Proceed to Checkout</Button>
-                       </div>
-                    </SheetFooter>
-                  </>
-                ) : (
-                  <p className="text-center text-muted-foreground mt-8">Your cart is empty.</p>
-                )}
-              </div>
-            </SheetContent>
-          </Sheet>
-          
+          <Button variant="ghost" size="icon">
+            <ShoppingCart className="h-5 w-5" />
+            <span className="sr-only">Shopping Cart</span>
+          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon">
