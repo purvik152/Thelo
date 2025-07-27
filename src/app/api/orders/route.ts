@@ -3,6 +3,9 @@ import dbConnect from '@/lib/dbConnect';
 import Order from '@/models/Order';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
+import Notification from '@/models/Notification';
+import Product from '@/models/Product';
+import SellerProfile from '@/models/SellerProfile';
 
 interface DecodedToken {
     id: string;
@@ -16,36 +19,56 @@ export async function POST(request: NextRequest) {
 
         const token = (await cookies()).get('token')?.value;
         if (!token) {
-            console.error("ORDER API: Authentication failed - No token found.");
+            console.error("ORDER API: Auth failed - No token.");
             return NextResponse.json({ message: 'Authentication required' }, { status: 401 });
         }
         console.log("ORDER API: Token found.");
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as DecodedToken;
+        const decoded = jwt.verify(token, process.env.JWT_SECRET!, { algorithms: ["HS256"] }) as DecodedToken;
         const customerId = decoded.id;
         console.log(`ORDER API: Token decoded for customer ID: ${customerId}`);
 
         const body = await request.json();
-        console.log("ORDER API: Request body parsed:", body);
-        
-        const { items, totalAmount, shippingAddress, mobileNumber } = body;
-
-        if (!items || !totalAmount || !shippingAddress || !mobileNumber) {
-            console.error("ORDER API: Validation failed - Missing fields in body.");
-            return NextResponse.json({ message: 'Missing required order information.' }, { status: 400 });
-        }
+        console.log("ORDER API: Request body parsed.");
 
         const newOrder = new Order({
             customer: customerId,
-            items,
-            totalAmount,
-            shippingAddress,
-            mobileNumber,
+            items: body.items,
+            totalAmount: body.totalAmount,
+            shippingAddress: body.shippingAddress,
+            mobileNumber: body.mobileNumber,
         });
         console.log("ORDER API: New order object created.");
 
         await newOrder.save();
         console.log("ORDER API: Order saved to database successfully!");
+
+        // Safer notification logic
+        try {
+            console.log("ORDER API: Attempting to create notification for seller.");
+            const firstProductId = newOrder.items[0]?.product;
+            if (firstProductId) {
+                const product = await Product.findById(firstProductId);
+                if (product) {
+                    const sellerProfile = await SellerProfile.findById(product.seller);
+                    if (sellerProfile) {
+                        await new Notification({
+                            user: sellerProfile.user,
+                            message: `You have a new order (#${newOrder._id.toString().slice(-6).toUpperCase()})`,
+                            link: '/dashboard/seller/orders'
+                        }).save();
+                        console.log("ORDER API: Notification for seller created successfully.");
+                    } else {
+                         console.error("ORDER API: Notification failed - Seller profile not found.");
+                    }
+                } else {
+                    console.error("ORDER API: Notification failed - Product not found.");
+                }
+            }
+        } catch (notificationError: any) {
+            console.error("--- ORDER API: FAILED TO CREATE NOTIFICATION ---");
+            console.error(notificationError.message);
+        }
 
         return NextResponse.json({ message: 'Order created successfully', order: newOrder }, { status: 201 });
 

@@ -8,15 +8,15 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription, SheetTrigger, SheetFooter } from '@/components/ui/sheet';
 import { ShoppingCart, User, LogOut, Package } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
+import { NotificationBell } from './NotificationBell'; // 1. ADDED the import for the notification bell
 
-// Make sure 'export' is here
 export function Navbar() {
   const router = useRouter();
   const { cartItems } = useCart();
 
   const handleLogout = async () => {
     await fetch('/api/auth/logout');
-    router.push('/'); // Redirect to homepage after logout
+    router.push('/');
   };
 
   const cartItemCount = cartItems.reduce((total, item) => total + item.quantity, 0);
@@ -41,6 +41,9 @@ export function Navbar() {
         </div>
 
         <div className="flex flex-1 items-center justify-end space-x-2">
+          {/* 2. ADDED the NotificationBell component with the 'shopkeeper' role */}
+          <NotificationBell role="shopkeeper" />
+
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="relative">
