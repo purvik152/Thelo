@@ -1,54 +1,50 @@
-/*
-* =================================================================================================
-* FILE: src/components/custom/ProductCard.tsx
-*
-* ACTION: No changes needed. Just verify your code matches this.
-* This card correctly displays the Base64 image string from the database.
-* =================================================================================================
-*/
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import Image from 'next/image';
+import Link from 'next/link';
+import { Card, CardTitle } from "@/components/ui/card";
+import { cn } from '@/lib/utils';
+import { IProduct } from '@/models/Product';
 
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  seller: {
-    brandName: string;
-    location: string;
-  };
+// Interface for product data including the seller's details
+interface PopulatedSeller {
+  _id: string;
+  brandName: string;
+}
+
+interface PopulatedProduct extends Omit<IProduct, 'seller'> {
+  seller: PopulatedSeller;
 }
 
 interface ProductCardProps {
-  product: Product;
+  product: PopulatedProduct;
+  onSelect: () => void;
+  isSelected: boolean;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, onSelect, isSelected }: ProductCardProps) {
   return (
-    <Card className="flex flex-col overflow-hidden">
-      <CardHeader className="p-0">
-        <div className="relative aspect-video w-full">
+    <Card 
+      className={cn(
+        "cursor-pointer transition-all duration-200 hover:shadow-md w-full",
+        isSelected ? "border-primary shadow-lg" : "border-transparent"
+      )}
+      onClick={onSelect}
+    >
+      <div className="flex items-start space-x-4 p-4">
+        <div className="relative w-24 h-24 flex-shrink-0">
           <Image
-            src={product.imageUrl || 'https://placehold.co/400x225/eee/ccc?text=Image+Not+Available'}
+            src={product.imageUrl || 'https://placehold.co/100x100/e2e8f0/475569?text=Image'}
             alt={product.name}
             fill
-            className="object-cover"
+            className="rounded-md object-cover"
           />
         </div>
-      </CardHeader>
-      <CardContent className="flex-grow p-4">
-        <CardTitle className="text-lg font-semibold leading-tight">{product.name}</CardTitle>
-        <CardDescription className="mt-1 text-sm">
-          by {product.seller.brandName}
-        </CardDescription>
-        <p className="text-xs text-muted-foreground mt-1">{product.seller.location}</p>
-      </CardContent>
-      <CardFooter className="p-4 pt-0 flex items-center justify-between">
-        <p className="text-xl font-bold">₹{product.price.toFixed(2)}</p>
-        <Button>Add to Cart</Button>
-      </CardFooter>
+        <div className="flex-grow overflow-hidden">
+          <p className="text-sm font-semibold text-primary truncate">{product.seller.brandName}</p>
+          <CardTitle className="text-md font-bold mb-1 truncate">{product.name}</CardTitle>
+          <p className="text-sm text-muted-foreground">{product.location}</p>
+          <p className="text-lg font-bold mt-2">${product.price.toFixed(2)}</p>
+        </div>
+      </div>
     </Card>
   );
 }

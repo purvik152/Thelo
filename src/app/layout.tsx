@@ -1,20 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
+import { CartProvider } from "@/context/CartContext"; // 1. Make sure this import exists
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Thelo",
-  description: "Thelo: Connecting to Vandor to Shopkeeper",
+  description: "B2B Marketplace",
 };
 
 export default function RootLayout({
@@ -24,10 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={inter.className}>
+        {/* 2. This is the most important part. CartProvider MUST wrap {children}. */}
+        <CartProvider>
+          {children}
+        </CartProvider>
       </body>
     </html>
   );

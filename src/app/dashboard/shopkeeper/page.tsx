@@ -1,120 +1,120 @@
-/*
-* =================================================================================================
-* FILE: src/app/dashboard/shopkeeper/page.tsx
-*
-* This is the updated Shopkeeper Dashboard. It no longer uses mock data.
-* - It fetches all 'Active' products from the live API.
-* - The search and location filters now work on the real data.
-* =================================================================================================
-*/
 "use client";
 
-import { useState, useEffect, useMemo } from 'react';
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 import { ProductCard } from '@/components/custom/ProductCard';
-import { Search, MapPin } from 'lucide-react';
+import { IProduct } from '@/models/Product';
+import { Skeleton } from "@/components/ui/skeleton";
 
-type Product = {
+// Interface for product data including the seller's details
+interface PopulatedSeller {
   _id: string;
-  name: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-  location: string;
-  seller?: {
-    brandName?: string;
-  };
-};
+  brandName: string;
+}
+
+interface PopulatedProduct extends Omit<IProduct, 'seller'> {
+  seller: PopulatedSeller;
+}
+
+// A new component for the right-side detail view
+function ProductDetailView({ product }: { product: PopulatedProduct }) {
+  return (
+    <div className="sticky top-24"> {/* Makes the right column "stick" while scrolling the left */}
+      <div className="border rounded-lg p-6">
+        <div className="relative w-full h-64 mb-4 rounded-lg overflow-hidden">
+          <Image
+            src={product.imageUrl || 'https://placehold.co/600x400/e2e8f0/475569?text=Image'}
+            alt={product.name}
+            fill
+            className="object-cover"
+          />
+        </div>
+        <h2 className="text-2xl font-bold">{product.name}</h2>
+        <p className="text-md text-muted-foreground mb-2">by {product.seller.brandName}</p>
+        <p className="text-3xl font-bold text-primary my-4">${product.price.toFixed(2)}</p>
+        
+        <div className="text-sm space-y-2 my-4">
+          <p><span className="font-semibold">Location:</span> {product.location}</p>
+          <p><span className="font-semibold">Category:</span> {product.category}</p>
+          <p><span className="font-semibold">Stock:</span> {product.stock > 0 ? `${product.stock} units available` : 'Out of Stock'}</p>
+        </div>
+
+        <p className="text-sm text-foreground leading-relaxed my-4">{product.description}</p>
+        
+        <Button size="lg" className="w-full">Add to Cart</Button>
+      </div>
+    </div>
+  );
+}
 
 export default function ShopkeeperMarketplace() {
-  const [allProducts, setAllProducts] = useState<Product[]>([]); // To store the original list
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]); // To display
+  const [products, setProducts] = useState<PopulatedProduct[]>([]);
+  const [selectedProduct, setSelectedProduct] = useState<PopulatedProduct | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [location, setLocation] = useState('');
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      setIsLoading(true);
+    async function fetchProducts() {
       try {
+        setIsLoading(true);
         const response = await fetch('/api/products');
         const data = await response.json();
-        if (!response.ok) throw new Error(data.message || "Failed to fetch products.");
-        setAllProducts(data.products);
-        setFilteredProducts(data.products);
+        if (data.success && data.products.length > 0) {
+          setProducts(data.products);
+          setSelectedProduct(data.products[0]); // Select the first product by default
+        }
       } catch (error) {
-        console.error(error);
+        console.error("Failed to fetch products:", error);
       } finally {
         setIsLoading(false);
       }
-    };
+    }
     fetchProducts();
   }, []);
 
-  const handleSearch = (event: React.FormEvent) => {
-    event.preventDefault();
-    let filtered = allProducts;
-
-    if (searchTerm) {
-      filtered = filtered.filter(p => 
-        p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        p.category.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-
-    if (location) {
-      filtered = filtered.filter(p => 
-        p.location.toLowerCase().includes(location.toLowerCase())
-      );
-    }
-    setFilteredProducts(filtered);
-  };
-
   return (
-    <div className="container py-8">
-      <div className="mb-10 rounded-lg bg-card p-6 border shadow-sm">
-        <h1 className="text-2xl font-bold mb-4">Find Products for Your Shop</h1>
-        <form onSubmit={handleSearch} className="grid grid-cols-1 md:grid-cols-5 gap-4">
-          <div className="md:col-span-2 relative bg-white">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input type="text" placeholder="Product name or category" className="pl-10 h-12" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
-          </div>
-          <div className="md:col-span-2 relative bg-white">
-            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input type="text" placeholder="City or State" className="pl-10 h-12" value={location} onChange={(e) => setLocation(e.target.value)} />
-          </div>
-          <Button type="submit" className="h-12 text-base font-semibold md:col-span-1 bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]">Find Products</Button>
-        </form>
+    <main className="container mx-auto py-8">
+      <div className="mb-8 relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+        <Input placeholder="Search by product name, category..." className="pl-10 h-12 text-lg" />
       </div>
-
-      {isLoading ? (
-        <div className="text-center col-span-full py-16">
-            <h2 className="text-2xl font-semibold">Loading products...</h2>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        {/* Left Column: Product List */}
+        <div className="lg:col-span-5 xl:col-span-4">
+          <div className="space-y-4">
+            {isLoading ? (
+              Array.from({ length: 5 }).map((_, i) => <Skeleton key={i} className="h-28 w-full rounded-lg" />)
+            ) : products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard 
+                  key={product._id as string} 
+                  product={product} 
+                  isSelected={selectedProduct?._id === product._id}
+                  onSelect={() => setSelectedProduct(product)}
+                />
+              ))
+            ) : (
+              <p>No products found.</p>
+            )}
+          </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredProducts.map((product: any) => (
-            <ProductCard key={product._id} product={{
-                id: product._id,
-                name: product.name,
-                price: product.price,
-                imageUrl: product.imageUrl,
-                seller: {
-                    brandName: product.seller?.brandName || 'N/A',
-                    location: product.location
-                }
-            }} />
-          ))}
+        
+        {/* Right Column: Product Detail */}
+        <div className="lg:col-span-7 xl:col-span-8">
+          {isLoading ? (
+            <Skeleton className="h-[600px] w-full rounded-lg" />
+          ) : selectedProduct ? (
+            <ProductDetailView product={selectedProduct} />
+          ) : (
+             <div className="flex h-full items-center justify-center text-muted-foreground">
+                <p>Select a product to see details.</p>
+             </div>
+          )}
         </div>
-      )}
-
-      {!isLoading && filteredProducts.length === 0 && (
-        <div className="text-center col-span-full py-16">
-            <h2 className="text-2xl font-semibold">No products found</h2>
-            <p className="text-muted-foreground mt-2">Try adjusting your search terms or check back later.</p>
-        </div>
-      )}
-    </div>
+      </div>
+    </main>
   );
 }
