@@ -1,10 +1,3 @@
-/*
-* =================================================================================================
-* FILE: src/components/custom/LoginPageComponent.tsx
-*
-* This is the login form, refactored into a reusable component.
-* =================================================================================================
-*/
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -20,16 +13,26 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-function FormMessage({ type, message }: { type: 'error' | 'success', message: string }) {
+interface LoginFormData {
+  email: string;
+  password: string;
+}
+
+type FormMessageProps = {
+  type: "error" | "success";
+  message: string;
+};
+
+function FormMessage({ type, message }: FormMessageProps) {
   if (!message) return null;
-  const color = type === 'error' ? 'text-red-600' : 'text-green-600';
+  const color = type === "error" ? "text-red-600" : "text-green-600";
   return <p className={`text-sm font-medium ${color}`}>{message}</p>;
 }
 
 export function LoginPageComponent() {
   const router = useRouter();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -37,23 +40,24 @@ export function LoginPageComponent() {
     setError("");
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email") as string;
-    const password = formData.get("password") as string;
+    const data: LoginFormData = {
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+    };
 
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
       });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.message || "Login failed.");
-      
-      if (data.user.role === 'seller') {
-        router.push('/dashboard/seller');
-      } else {
-        router.push('/dashboard/shopkeeper');
-      }
+      const respJson = await response.json();
+      if (!response.ok) throw new Error(respJson.message || "Login failed");
+
+      if (respJson.user.role === "seller") router.push("/dashboard/seller");
+      else router.push("/dashboard/shopkeeper");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -72,15 +76,15 @@ export function LoginPageComponent() {
           <div className="grid gap-4">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="m@example.com" className=" bg-[#FDFBF4]" required />
+              <Input id="email" name="email" type="email" required />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" className=" bg-[#FDFBF4]" required />
+              <Input id="password" name="password" type="password" required />
             </div>
             {error && <FormMessage type="error" message={error} />}
-            <Button type="submit" className="w-full bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
+            <Button type="submit" disabled={loading} className="w-full ...">
+              {loading ? "Logging in..." : "Login"}
             </Button>
           </div>
         </form>
