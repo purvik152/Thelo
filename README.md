@@ -2,6 +2,10 @@
 
 Thelo is a modern, full-stack B2B marketplace connecting raw food material sellers directly with shopkeepers. It provides an online platform for efficient inventory management and seamless product discovery, ensuring secure transactions and a streamlined supply chain.
 
+# Demo
+
+https://drive.google.com/drive/folders/1SeUFOmFVcbiCStji0ht1i6XYncWGDXac?usp=sharing
+
 # Features
 
 ## Core Functionalities: 
