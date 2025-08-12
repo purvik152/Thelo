@@ -130,8 +130,8 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
     return (
         <DropdownMenu onOpenChange={handleOpenChange}>
             <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="relative bg-[#BEA093] text-white hover:bg-[#FBF3E5] hover:text-[#BEA093] ">
-                    {unreadCount > 0 && (
+                <Button variant="ghost" size="icon" className={`relative text-white hover:bg-[#FBF3E5] hover:text-[#BEA093] ${hasError ? 'bg-gray-400' : 'bg-[#BEA093]'}`}>
+                    {!hasError && unreadCount > 0 && (
                         <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
                             {unreadCount}
                         </span>
@@ -144,9 +144,12 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
                     {role === 'seller' ? 'New Orders' : 'Order Updates'}
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                {filteredNotifications.length > 0 ? (
+                {hasError ? (
+                    <p className="p-4 text-sm text-red-600 text-center">
+                        Unable to load notifications. Please refresh the page.
+                    </p>
+                ) : filteredNotifications.length > 0 ? (
                     <div className="max-h-80 overflow-y-auto">
-                        {/* 3. Map over the new filtered list */}
                         {filteredNotifications.map(notif => (
                             <DropdownMenuItem key={notif._id} onSelect={() => router.push(notif.link)} className="flex items-start gap-3 p-2">
                                 {!notif.isRead && (<span className="mt-1 flex h-2 w-2 rounded-full bg-sky-500" />)}
