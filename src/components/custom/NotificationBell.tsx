@@ -15,6 +15,7 @@ interface NotificationType {
 // 1. Add a 'role' prop to the component
 export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
     const [notifications, setNotifications] = useState<NotificationType[]>([]);
+    const [isFetching, setIsFetching] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
