@@ -45,15 +45,32 @@ export async function GET(request: NextRequest) {
             }, { status: 401 });
         }
 
-        // Fetch notifications
-        const notifications = await Notification.find({ user: decoded.id })
-            .sort({ createdAt: -1 })
-            .limit(10)
-            .lean();
+        // Validate user ID format
+        if (!decoded.id || typeof decoded.id !== 'string') {
+            return NextResponse.json({
+                success: false,
+                message: 'Invalid user ID in token'
+            }, { status: 400 });
+        }
+
+        // Fetch notifications with error handling
+        let notifications;
+        try {
+            notifications = await Notification.find({ user: decoded.id })
+                .sort({ createdAt: -1 })
+                .limit(10)
+                .lean();
+        } catch (dbError) {
+            console.error('Database query error:', dbError);
+            return NextResponse.json({
+                success: false,
+                message: 'Database query failed'
+            }, { status: 500 });
+        }
 
         return NextResponse.json({
             success: true,
-            notifications: notifications || []
+            notifications: Array.isArray(notifications) ? notifications : []
         }, {
             status: 200,
             headers: {
