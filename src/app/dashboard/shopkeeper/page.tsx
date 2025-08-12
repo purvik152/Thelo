@@ -55,6 +55,7 @@ export default function ShopkeeperMarketplace() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
   const fetchProducts = async (searchQuery = '', locationQuery = '') => {
     try {
