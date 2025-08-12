@@ -20,8 +20,20 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const response = await fetch('/api/notifications');
+                const response = await fetch('/api/notifications', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    cache: 'no-store'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
                 const data = await response.json();
+
                 if (data.success) {
                     setNotifications(data.notifications);
                 }
