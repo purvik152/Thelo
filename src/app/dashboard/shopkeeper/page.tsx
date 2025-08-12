@@ -58,7 +58,10 @@ export default function ShopkeeperMarketplace() {
   const [isFetching, setIsFetching] = useState(false);
 
   const fetchProducts = async (searchQuery = '', locationQuery = '') => {
+    if (isFetching) return; // Prevent duplicate calls
+
     try {
+      setIsFetching(true);
       setIsLoading(true);
       const response = await fetch(`/api/products?search=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(locationQuery)}`, {
         method: 'GET',
@@ -90,6 +93,7 @@ export default function ShopkeeperMarketplace() {
       toast.error("An error occurred while fetching products.");
     } finally {
       setIsLoading(false);
+      setIsFetching(false);
     }
   };
 
