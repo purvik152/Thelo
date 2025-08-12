@@ -15,15 +15,18 @@ interface NotificationType {
 // 1. Add a 'role' prop to the component
 export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
     const [notifications, setNotifications] = useState<NotificationType[]>([]);
+    const [hasError, setHasError] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
         let isSubscribed = true;
+        let retryCount = 0;
+        const maxRetries = 3;
 
         const fetchNotifications = async () => {
             try {
                 const abortController = new AbortController();
-                const timeoutId = setTimeout(() => abortController.abort(), 5000); // 5 second timeout
+                const timeoutId = setTimeout(() => abortController.abort(), 5000);
 
                 const response = await fetch('/api/notifications', {
                     method: 'GET',
@@ -41,16 +44,27 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
                 if (!response.ok) {
                     console.error(`Notifications API error: ${response.status}`, data);
                     if (response.status === 401) {
-                        // Token might be expired, redirect to login
                         console.log('Authentication failed, user might need to re-login');
+                        setHasError(true);
+                        return;
                     }
+                    if (response.status >= 500 && retryCount < maxRetries) {
+                        retryCount++;
+                        console.log(`Retrying notifications fetch (attempt ${retryCount}/${maxRetries})`);
+                        setTimeout(fetchNotifications, 2000 * retryCount); // Exponential backoff
+                        return;
+                    }
+                    setHasError(true);
                     return;
                 }
 
                 if (data.success && isSubscribed) {
                     setNotifications(data.notifications || []);
+                    setHasError(false);
+                    retryCount = 0; // Reset retry count on success
                 } else if (!data.success) {
                     console.error('Notifications fetch failed:', data.message);
+                    setHasError(true);
                 }
             } catch (error: any) {
                 if (error.name === 'AbortError') {
@@ -58,17 +72,24 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
                     return;
                 }
                 console.error("Failed to fetch notifications:", error);
+                if (retryCount < maxRetries) {
+                    retryCount++;
+                    setTimeout(fetchNotifications, 2000 * retryCount);
+                } else {
+                    setHasError(true);
+                }
             }
         };
 
         fetchNotifications();
-        const intervalId = setInterval(fetchNotifications, 15000);
+        // Only set up interval if there's no error
+        const intervalId = !hasError ? setInterval(fetchNotifications, 15000) : null;
 
         return () => {
             isSubscribed = false;
-            clearInterval(intervalId);
+            if (intervalId) clearInterval(intervalId);
         };
-    }, []);
+    }, [hasError]);
     
     // 2. Filter notifications based on the role
     const filteredNotifications = notifications.filter(n => {
