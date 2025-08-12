@@ -36,14 +36,21 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
 
                 clearTimeout(timeoutId);
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
                 const data = await response.json();
 
+                if (!response.ok) {
+                    console.error(`Notifications API error: ${response.status}`, data);
+                    if (response.status === 401) {
+                        // Token might be expired, redirect to login
+                        console.log('Authentication failed, user might need to re-login');
+                    }
+                    return;
+                }
+
                 if (data.success && isSubscribed) {
-                    setNotifications(data.notifications);
+                    setNotifications(data.notifications || []);
+                } else if (!data.success) {
+                    console.error('Notifications fetch failed:', data.message);
                 }
             } catch (error: any) {
                 if (error.name === 'AbortError') {
