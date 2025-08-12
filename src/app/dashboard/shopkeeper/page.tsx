@@ -59,8 +59,20 @@ export default function ShopkeeperMarketplace() {
   const fetchProducts = async (searchQuery = '', locationQuery = '') => {
     try {
       setIsLoading(true);
-      const response = await fetch(`/api/products?search=${searchQuery}&location=${locationQuery}`);
+      const response = await fetch(`/api/products?search=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(locationQuery)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       const data = await response.json();
+
       if (data.success) {
         setProducts(data.products);
         if (data.products.length > 0) {
@@ -70,7 +82,7 @@ export default function ShopkeeperMarketplace() {
             toast.info("No products found for your search.");
         }
       } else {
-        toast.error("Failed to fetch products.");
+        toast.error(data.message || "Failed to fetch products.");
       }
     } catch (error) {
       console.error("Failed to fetch products:", error);
