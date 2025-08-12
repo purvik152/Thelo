@@ -65,8 +65,21 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
 
     const handleOpenChange = async (isOpen: boolean) => {
         if (isOpen && unreadCount > 0) {
-            await fetch('/api/notifications/read', { method: 'PUT' });
-            setNotifications(current => current.map(n => ({ ...n, isRead: true })));
+            try {
+                const response = await fetch('/api/notifications/read', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    cache: 'no-store'
+                });
+
+                if (response.ok) {
+                    setNotifications(current => current.map(n => ({ ...n, isRead: true })));
+                }
+            } catch (error) {
+                console.error("Failed to mark notifications as read:", error);
+            }
         }
     };
 
