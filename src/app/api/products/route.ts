@@ -67,9 +67,19 @@ export async function GET(request: NextRequest) {
         // Execute the query to find the matching products
         const products = await Product.find(query)
             .populate({ path: 'seller', select: 'brandName', model: SellerProfile })
-            .sort({ createdAt: -1 });
-            
-        return NextResponse.json({ success: true, products }, { status: 200 });
+            .sort({ createdAt: -1 })
+            .lean(); // Use lean() for better performance
+
+        return NextResponse.json({
+            success: true,
+            products: products || []
+        }, {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache, no-store, must-revalidate'
+            }
+        });
     } catch (error) {
         console.error('PRODUCT_GET_ERROR', error);
         return NextResponse.json({ message: 'An internal server error occurred.' }, { status: 500 });
