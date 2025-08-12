@@ -55,21 +55,24 @@ export default function ShopkeeperMarketplace() {
   const [isLoading, setIsLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [location, setLocation] = useState('');
-  const [isFetching, setIsFetching] = useState(false);
 
   const fetchProducts = async (searchQuery = '', locationQuery = '') => {
-    if (isFetching) return; // Prevent duplicate calls
-
     try {
-      setIsFetching(true);
       setIsLoading(true);
+
+      const abortController = new AbortController();
+      const timeoutId = setTimeout(() => abortController.abort(), 10000); // 10 second timeout
+
       const response = await fetch(`/api/products?search=${encodeURIComponent(searchQuery)}&location=${encodeURIComponent(locationQuery)}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
         },
-        cache: 'no-store'
+        cache: 'no-store',
+        signal: abortController.signal
       });
+
+      clearTimeout(timeoutId);
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -88,12 +91,15 @@ export default function ShopkeeperMarketplace() {
       } else {
         toast.error(data.message || "Failed to fetch products.");
       }
-    } catch (error) {
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        console.log('Fetch aborted');
+        return;
+      }
       console.error("Failed to fetch products:", error);
       toast.error("An error occurred while fetching products.");
     } finally {
       setIsLoading(false);
-      setIsFetching(false);
     }
   };
 
