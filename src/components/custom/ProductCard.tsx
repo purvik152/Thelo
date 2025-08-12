@@ -23,24 +23,33 @@ export function ProductCard({ product, onSelect, isSelected }: ProductCardProps)
   return (
     <Card
       className={cn(
-        "cursor-pointer transition-all duration-200 hover:bg-[#BEA093]/70 w-full",
-        isSelected ? "bg-[#FDFBF4] border" : "border-transparent"
+        "cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-[1.02] transform w-full group border border-gray-200 bg-white",
+        isSelected
+          ? "bg-gradient-to-br from-[#FBF3E5] to-[#FDFBF4] border-[#BEA093] shadow-lg"
+          : "hover:bg-gradient-to-br hover:from-[#FBF3E5]/50 hover:to-[#FDFBF4]/50 hover:border-[#BEA093]/30"
       )}
       onClick={onSelect}
     >
-      <div className="flex items-center space-x-4 p-3">
+      <div className="flex items-center space-x-4 p-4">
         <div className="relative w-16 h-16 flex-shrink-0">
           <Image
             src={product.imageUrl || 'https://placehold.co/64x64/e2e8f0/475569?text=Img'}
             alt={product.name}
             fill
-            className="rounded-md object-cover"
+            className="rounded-lg object-cover group-hover:scale-105 transition-transform duration-300 shadow-sm"
           />
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
         </div>
         <div className="flex-grow overflow-hidden">
-          <CardTitle className="text-sm font-bold truncate">{product.name}</CardTitle>
-          <p className="text-xs text-muted-foreground truncate">by {product.seller?.brandName ?? 'Unknown Seller'}</p>
-          <p className="text-md font-bold mt-1">₹{product.price.toFixed(2)}</p>
+          <CardTitle className="text-sm font-bold truncate text-gray-900 group-hover:text-[#BEA093] transition-colors duration-300">
+            {product.name}
+          </CardTitle>
+          <p className="text-xs text-gray-500 truncate">
+            by {product.seller?.brandName ?? 'Unknown Seller'}
+          </p>
+          <p className="text-md font-bold mt-2 text-gray-900 group-hover:text-[#BEA093] transition-colors duration-300">
+            ₹{product.price.toFixed(2)}
+          </p>
         </div>
       </div>
     </Card>
