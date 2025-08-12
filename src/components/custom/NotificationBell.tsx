@@ -15,22 +15,26 @@ interface NotificationType {
 // 1. Add a 'role' prop to the component
 export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
     const [notifications, setNotifications] = useState<NotificationType[]>([]);
-    const [isFetching, setIsFetching] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
-        const fetchNotifications = async () => {
-            if (isFetching) return; // Prevent duplicate calls
+        let isSubscribed = true;
 
+        const fetchNotifications = async () => {
             try {
-                setIsFetching(true);
+                const abortController = new AbortController();
+                const timeoutId = setTimeout(() => abortController.abort(), 5000); // 5 second timeout
+
                 const response = await fetch('/api/notifications', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    cache: 'no-store'
+                    cache: 'no-store',
+                    signal: abortController.signal
                 });
+
+                clearTimeout(timeoutId);
 
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -38,20 +42,26 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
 
                 const data = await response.json();
 
-                if (data.success) {
+                if (data.success && isSubscribed) {
                     setNotifications(data.notifications);
                 }
-            } catch (error) {
+            } catch (error: any) {
+                if (error.name === 'AbortError') {
+                    console.log('Notification fetch aborted');
+                    return;
+                }
                 console.error("Failed to fetch notifications:", error);
-            } finally {
-                setIsFetching(false);
             }
         };
 
         fetchNotifications();
         const intervalId = setInterval(fetchNotifications, 15000);
-        return () => clearInterval(intervalId);
-    }, [isFetching]);
+
+        return () => {
+            isSubscribed = false;
+            clearInterval(intervalId);
+        };
+    }, []);
     
     // 2. Filter notifications based on the role
     const filteredNotifications = notifications.filter(n => {
