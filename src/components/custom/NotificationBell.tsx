@@ -20,7 +20,10 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
 
     useEffect(() => {
         const fetchNotifications = async () => {
+            if (isFetching) return; // Prevent duplicate calls
+
             try {
+                setIsFetching(true);
                 const response = await fetch('/api/notifications', {
                     method: 'GET',
                     headers: {
@@ -40,13 +43,15 @@ export function NotificationBell({ role }: { role: 'seller' | 'shopkeeper' }) {
                 }
             } catch (error) {
                 console.error("Failed to fetch notifications:", error);
+            } finally {
+                setIsFetching(false);
             }
         };
 
         fetchNotifications();
         const intervalId = setInterval(fetchNotifications, 15000);
         return () => clearInterval(intervalId);
-    }, []);
+    }, [isFetching]);
     
     // 2. Filter notifications based on the role
     const filteredNotifications = notifications.filter(n => {
