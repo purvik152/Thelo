@@ -13,9 +13,19 @@ export async function GET(request: NextRequest) {
 
         const notifications = await Notification.find({ user: decoded.id })
             .sort({ createdAt: -1 })
-            .limit(10); // Get the 10 most recent notifications
-        
-        return NextResponse.json({ success: true, notifications });
+            .limit(10)
+            .lean(); // Use lean() for better performance
+
+        return NextResponse.json({
+            success: true,
+            notifications: notifications || []
+        }, {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/json',
+                'Cache-Control': 'no-cache, no-store, must-revalidate'
+            }
+        });
     } catch (error) {
         return NextResponse.json({ message: 'Error fetching notifications' }, { status: 500 });
     }
