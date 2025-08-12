@@ -5,16 +5,51 @@ import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
-    await dbConnect();
     try {
-        const token = (await cookies()).get('token')?.value;
-        if (!token) return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
-        const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
+        // Connect to database
+        await dbConnect();
 
+        // Get and validate token
+        const token = (await cookies()).get('token')?.value;
+        if (!token) {
+            return NextResponse.json({
+                success: false,
+                message: 'Unauthorized - No token provided'
+            }, { status: 401 });
+        }
+
+        // Verify JWT token
+        if (!process.env.JWT_SECRET) {
+            console.error('JWT_SECRET environment variable is not set');
+            return NextResponse.json({
+                success: false,
+                message: 'Server configuration error'
+            }, { status: 500 });
+        }
+
+        let decoded;
+        try {
+            decoded = jwt.verify(token, process.env.JWT_SECRET) as { id: string };
+        } catch (jwtError) {
+            console.error('JWT verification failed:', jwtError);
+            return NextResponse.json({
+                success: false,
+                message: 'Invalid token'
+            }, { status: 401 });
+        }
+
+        if (!decoded.id) {
+            return NextResponse.json({
+                success: false,
+                message: 'Invalid token payload'
+            }, { status: 401 });
+        }
+
+        // Fetch notifications
         const notifications = await Notification.find({ user: decoded.id })
             .sort({ createdAt: -1 })
             .limit(10)
-            .lean(); // Use lean() for better performance
+            .lean();
 
         return NextResponse.json({
             success: true,
@@ -27,6 +62,11 @@ export async function GET(request: NextRequest) {
             }
         });
     } catch (error) {
-        return NextResponse.json({ message: 'Error fetching notifications' }, { status: 500 });
+        console.error('Notifications API Error:', error);
+        return NextResponse.json({
+            success: false,
+            message: 'Error fetching notifications',
+            error: process.env.NODE_ENV === 'development' ? String(error) : undefined
+        }, { status: 500 });
     }
 }
