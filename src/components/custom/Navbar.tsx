@@ -109,12 +109,12 @@ export function Navbar() {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="bg-[#BEA093] text-white hover:bg-[#FBF3E5] hover:text-[#BEA093]">
+              <Button variant="ghost" size="icon" className="bg-gradient-to-r from-[#BEA093] to-[#D4C4B0] text-white hover:from-[#D4C4B0] hover:to-[#BEA093] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
                 <User className="h-5 w-5" />
                 <span className="sr-only">User Menu</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-[#FBF3E5]">
+            <DropdownMenuContent align="end" className="bg-white/95 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-lg">
               <DropdownMenuLabel className="bg-[#BEA093] rounded-t-lg">My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push('/dashboard/shopkeeper/profile')}>Profile</DropdownMenuItem>
