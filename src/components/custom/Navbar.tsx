@@ -48,9 +48,9 @@ export function Navbar() {
 
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative bg-[#BEA093] text-white hover:bg-[#FBF3E5] hover:text-[#BEA093]">
+              <Button variant="ghost" size="icon" className="relative bg-gradient-to-r from-[#BEA093] to-[#D4C4B0] text-white hover:from-[#D4C4B0] hover:to-[#BEA093] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
                 {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white shadow-lg animate-pulse">
                     {cartItemCount}
                   </span>
                 )}
@@ -58,7 +58,7 @@ export function Navbar() {
                 <span className="sr-only">Shopping Cart</span>
               </Button>
             </SheetTrigger>
-            <SheetContent className="bg-[#FBF3E5] p-6 rounded-l-lg">
+            <SheetContent className="bg-gradient-to-br from-[#FBF3E5] to-[#FDFBF4] p-6 rounded-l-lg border-l border-gray-200 shadow-2xl">
               <SheetHeader className="bg-[#BEA093] rounded-tl-lg">
                 <SheetTitle>Your Cart</SheetTitle>
                 <SheetDescription className="sr-only">A list of items in your cart.</SheetDescription>
