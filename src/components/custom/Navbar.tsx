@@ -26,18 +26,17 @@ export function Navbar() {
     <header className="sticky top-2 z-50 w-full px-8 center max-w-7xl border border-white/20 rounded-lg bg-white/80 backdrop-blur-xl shadow-lg shadow-black/5">
       <div className="container flex h-16 items-center">
         {/* MODIFICATION START: The main change is in this block */}
-        <div className="mr-4 flex items-center"> {/* REMOVED 'hidden md:flex' from this container */}
+        <div className="mr-4 flex items-center group">
           <Link href="/dashboard/shopkeeper" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold sm:inline-block"> {/* REMOVED 'hidden' to make it always visible */}
-              <img src="/FinalLogo-withoutBG.png" alt="Thelo" className="max-h-16" />
+            <span className="font-bold sm:inline-block">
+              <img src="/FinalLogo-withoutBG.png" alt="Thelo" className="max-h-16 transition-transform duration-300 group-hover:scale-105" />
             </span>
           </Link>
-          {/* MOVED 'hidden md:flex' to the nav element itself */}
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            <Link href="/dashboard/shopkeeper" className="transition-colors hover:text-foreground/80 text-foreground">
+            <Link href="/dashboard/shopkeeper" className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-[#BEA093] hover:bg-[#BEA093]/10 text-gray-700 font-medium">
               Marketplace
             </Link>
-            <Link href="/dashboard/shopkeeper/orders" className="transition-colors hover:text-foreground/80 text-foreground">
+            <Link href="/dashboard/shopkeeper/orders" className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-[#BEA093] hover:bg-[#BEA093]/10 text-gray-700 font-medium">
               My Orders
             </Link>
           </nav>
