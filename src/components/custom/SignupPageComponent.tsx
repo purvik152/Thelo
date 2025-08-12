@@ -69,37 +69,102 @@ export function SignupPageComponent() {
   };
 
   return (
-    <Card className="border-0 shadow-none">
-      <CardHeader>
-        <CardTitle className="text-xl">Create an Account</CardTitle>
-        <CardDescription>Enter your information to get started.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSignup}>
-          <div className="grid gap-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="grid gap-2"><Label htmlFor="first-name">First name</Label><Input id="first-name" name="first-name" placeholder="Max" className=" bg-[#FDFBF4]" required /></div>
-              <div className="grid gap-2"><Label htmlFor="last-name">Last name</Label><Input id="last-name" name="last-name" placeholder="Robinson" className=" bg-[#FDFBF4]" required /></div>
+    <div className="w-full max-w-md mx-auto">
+      <Card className="border-0 shadow-none bg-gradient-to-br from-white to-[#FDFBF4]">
+        <CardHeader className="text-center pb-2">
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-[#BEA093] to-[#D4C4B0] bg-clip-text text-transparent">
+            Join Thelo
+          </CardTitle>
+          <CardDescription className="text-gray-600 text-base">
+            Create your account and start trading today
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <form onSubmit={handleSignup} className="space-y-6">
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="first-name" className="text-sm font-medium text-gray-700">First Name</Label>
+                  <Input
+                    id="first-name"
+                    name="first-name"
+                    placeholder="John"
+                    className="bg-white border-gray-300 focus:border-[#BEA093] focus:ring-[#BEA093]/20 transition-all duration-300 h-11"
+                    required
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="last-name" className="text-sm font-medium text-gray-700">Last Name</Label>
+                  <Input
+                    id="last-name"
+                    name="last-name"
+                    placeholder="Doe"
+                    className="bg-white border-gray-300 focus:border-[#BEA093] focus:ring-[#BEA093]/20 transition-all duration-300 h-11"
+                    required
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-medium text-gray-700">Email Address</Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="john@example.com"
+                  className="bg-white border-gray-300 focus:border-[#BEA093] focus:ring-[#BEA093]/20 transition-all duration-300 h-11"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm font-medium text-gray-700">Password</Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Create a strong password"
+                  className="bg-white border-gray-300 focus:border-[#BEA093] focus:ring-[#BEA093]/20 transition-all duration-300 h-11"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="role" className="text-sm font-medium text-gray-700">I am a...</Label>
+                <Select onValueChange={setRole} defaultValue={role}>
+                  <SelectTrigger className="bg-white border-gray-300 focus:border-[#BEA093] focus:ring-[#BEA093]/20 transition-all duration-300 h-11">
+                    <SelectValue placeholder="Select your role" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-white border border-gray-200 shadow-xl">
+                    <SelectItem value="shopkeeper" className="hover:bg-[#FBF3E5] cursor-pointer">
+                      Shopkeeper - Buy products
+                    </SelectItem>
+                    <SelectItem value="seller" className="hover:bg-[#FBF3E5] cursor-pointer">
+                      Seller - Sell products
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-            <div className="grid gap-2"><Label htmlFor="email">Email</Label><Input id="email" name="email" type="email" placeholder="m@example.com" className=" bg-[#FDFBF4]" required /></div>
-            <div className="grid gap-2"><Label htmlFor="password">Password</Label><Input id="password" name="password" type="password" className=" bg-[#FDFBF4]"required /></div>
-            <div className="grid gap-2">
-              <Label htmlFor="role">I am a...</Label>
-              <Select onValueChange={setRole} defaultValue={role}>
-                <SelectTrigger className=" bg-[#FDFBF4]"><SelectValue placeholder="Select your role" /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="shopkeeper">Shopkeeper</SelectItem>
-                  <SelectItem value="seller">Seller</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            {error && <FormMessage type="error" message={error} />}
-            <Button type="submit" className="w-full bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" disabled={loading}>
-              {loading ? 'Creating Account...' : 'Create an account'}
+            {error && (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-200">
+                <FormMessage type="error" message={error} />
+              </div>
+            )}
+            <Button
+              type="submit"
+              className="w-full h-12 bg-gradient-to-r from-[#BEA093] to-[#D4C4B0] hover:from-[#D4C4B0] hover:to-[#BEA093] text-white font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              disabled={loading}
+            >
+              {loading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Creating Account...</span>
+                </div>
+              ) : (
+                'Create Account'
+              )}
             </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }
