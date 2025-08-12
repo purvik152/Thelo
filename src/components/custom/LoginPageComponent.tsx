@@ -62,29 +62,68 @@ export function LoginPageComponent() {
   };
 
   return (
-    <Card className="border-0 shadow-none">
-      <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
-        <CardDescription>Enter your email to access your dashboard.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleLogin}>
-          <div className="grid gap-4">
-            <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
-              <Input id="email" name="email" type="email" placeholder="m@example.com" className=" bg-[#FDFBF4]" required />
+    <div className="w-full max-w-md mx-auto">
+      <Card className="border-0 shadow-none bg-gradient-to-br from-white to-[#FDFBF4]">
+        <CardHeader className="text-center pb-2">
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-[#BEA093] to-[#D4C4B0] bg-clip-text text-transparent">
+            Welcome Back
+          </CardTitle>
+          <CardDescription className="text-gray-600 text-base">
+            Enter your credentials to access your dashboard
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="pt-6">
+          <form onSubmit={handleLogin} className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+                  Email Address
+                </Label>
+                <Input
+                  id="email"
+                  name="email"
+                  type="email"
+                  placeholder="Enter your email"
+                  className="bg-white border-gray-300 focus:border-[#BEA093] focus:ring-[#BEA093]/20 transition-all duration-300 h-12"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+                  Password
+                </Label>
+                <Input
+                  id="password"
+                  name="password"
+                  type="password"
+                  placeholder="Enter your password"
+                  className="bg-white border-gray-300 focus:border-[#BEA093] focus:ring-[#BEA093]/20 transition-all duration-300 h-12"
+                  required
+                />
+              </div>
             </div>
-            <div className="grid gap-2">
-              <Label htmlFor="password">Password</Label>
-              <Input id="password" name="password" type="password" className=" bg-[#FDFBF4]" required />
-            </div>
-            {error && <FormMessage type="error" message={error} />}
-            <Button type="submit" className="w-full bg-[#BEA093] hover:bg-[#FBF3E5] hover:text-[#BEA093]" disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
+            {error && (
+              <div className="p-3 rounded-lg bg-red-50 border border-red-200">
+                <FormMessage type="error" message={error} />
+              </div>
+            )}
+            <Button
+              type="submit"
+              className="w-full h-12 bg-gradient-to-r from-[#BEA093] to-[#D4C4B0] hover:from-[#D4C4B0] hover:to-[#BEA093] text-white font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+              disabled={loading}
+            >
+              {loading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  <span>Logging in...</span>
+                </div>
+              ) : (
+                'Sign In'
+              )}
             </Button>
-          </div>
-        </form>
-      </CardContent>
-    </Card>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
   );
 }

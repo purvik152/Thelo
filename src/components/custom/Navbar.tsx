@@ -23,21 +23,20 @@ export function Navbar() {
   const subtotal = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
   return (
-    <header className="sticky top-2 z-50 w-full px-8 center max-w-7xl border rounded-lg bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-2 z-50 w-full px-8 center max-w-7xl border border-white/20 rounded-lg bg-white/80 backdrop-blur-xl shadow-lg shadow-black/5">
       <div className="container flex h-16 items-center">
         {/* MODIFICATION START: The main change is in this block */}
-        <div className="mr-4 flex items-center"> {/* REMOVED 'hidden md:flex' from this container */}
+        <div className="mr-4 flex items-center group">
           <Link href="/dashboard/shopkeeper" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold sm:inline-block"> {/* REMOVED 'hidden' to make it always visible */}
-              <img src="/FinalLogo-withoutBG.png" alt="Thelo" className="max-h-16" />
+            <span className="font-bold sm:inline-block">
+              <img src="/FinalLogo-withoutBG.png" alt="Thelo" className="max-h-16 transition-transform duration-300 group-hover:scale-105" />
             </span>
           </Link>
-          {/* MOVED 'hidden md:flex' to the nav element itself */}
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
-            <Link href="/dashboard/shopkeeper" className="transition-colors hover:text-foreground/80 text-foreground">
+            <Link href="/dashboard/shopkeeper" className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-[#BEA093] hover:bg-[#BEA093]/10 text-gray-700 font-medium">
               Marketplace
             </Link>
-            <Link href="/dashboard/shopkeeper/orders" className="transition-colors hover:text-foreground/80 text-foreground">
+            <Link href="/dashboard/shopkeeper/orders" className="relative px-3 py-2 rounded-lg transition-all duration-300 hover:text-[#BEA093] hover:bg-[#BEA093]/10 text-gray-700 font-medium">
               My Orders
             </Link>
           </nav>
@@ -49,9 +48,9 @@ export function Navbar() {
 
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative bg-[#BEA093] text-white hover:bg-[#FBF3E5] hover:text-[#BEA093]">
+              <Button variant="ghost" size="icon" className="relative bg-gradient-to-r from-[#BEA093] to-[#D4C4B0] text-white hover:from-[#D4C4B0] hover:to-[#BEA093] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
                 {cartItemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
+                  <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white shadow-lg animate-pulse">
                     {cartItemCount}
                   </span>
                 )}
@@ -59,7 +58,7 @@ export function Navbar() {
                 <span className="sr-only">Shopping Cart</span>
               </Button>
             </SheetTrigger>
-            <SheetContent className="bg-[#FBF3E5] p-6 rounded-l-lg">
+            <SheetContent className="bg-gradient-to-br from-[#FBF3E5] to-[#FDFBF4] p-6 rounded-l-lg border-l border-gray-200 shadow-2xl">
               <SheetHeader className="bg-[#BEA093] rounded-tl-lg">
                 <SheetTitle>Your Cart</SheetTitle>
                 <SheetDescription className="sr-only">A list of items in your cart.</SheetDescription>
@@ -110,12 +109,12 @@ export function Navbar() {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="bg-[#BEA093] text-white hover:bg-[#FBF3E5] hover:text-[#BEA093]">
+              <Button variant="ghost" size="icon" className="bg-gradient-to-r from-[#BEA093] to-[#D4C4B0] text-white hover:from-[#D4C4B0] hover:to-[#BEA093] shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-300">
                 <User className="h-5 w-5" />
                 <span className="sr-only">User Menu</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="bg-[#FBF3E5]">
+            <DropdownMenuContent align="end" className="bg-white/95 backdrop-blur-xl border border-gray-200 shadow-2xl rounded-lg">
               <DropdownMenuLabel className="bg-[#BEA093] rounded-t-lg">My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push('/dashboard/shopkeeper/profile')}>Profile</DropdownMenuItem>
