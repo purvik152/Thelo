@@ -23,7 +23,7 @@ export function Navbar() {
   const subtotal = cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
   return (
-    <header className="sticky top-2 z-50 w-full px-8 center max-w-7xl border rounded-lg bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-2 z-50 w-full px-8 center max-w-7xl border border-white/20 rounded-lg bg-white/80 backdrop-blur-xl shadow-lg shadow-black/5">
       <div className="container flex h-16 items-center">
         {/* MODIFICATION START: The main change is in this block */}
         <div className="mr-4 flex items-center"> {/* REMOVED 'hidden md:flex' from this container */}
