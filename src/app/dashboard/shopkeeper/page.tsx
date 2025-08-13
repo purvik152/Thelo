@@ -147,15 +147,17 @@ export default function ShopkeeperMarketplace() {
 
         {/* Right Column: Product Detail */}
         <div className="lg:col-span-7 xl:col-span-8">
-          {isLoading ? (
-            <Skeleton className="h-[800px] w-full rounded-lg" />
-          ) : selectedProduct ? (
-            <ProductDetailView product={selectedProduct} />
-          ) : (
-             <div className="flex h-full items-center justify-center text-muted-foreground">
-                <p>Select a product to see details.</p>
-             </div>
-          )}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6 min-h-[800px]">
+            {isLoading ? (
+              <Skeleton className="h-[700px] w-full rounded-lg" />
+            ) : selectedProduct ? (
+              <ProductDetailView product={selectedProduct} />
+            ) : (
+               <div className="flex h-full items-center justify-center text-muted-foreground">
+                  <p>Select a product to see details.</p>
+               </div>
+            )}
+          </div>
         </div>
       </div>
     </main>
