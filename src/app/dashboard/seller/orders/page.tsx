@@ -96,16 +96,6 @@ export default function OrdersReceivedPage() {
 
     return (
         <div className="container mx-auto py-8 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg mx-4 my-8">
-            <Toaster
-                richColors
-                position="bottom-center"
-                toastOptions={{
-                  style: {
-                    margin: '0 auto 24px auto',
-                    maxWidth: '400px',
-                  },
-                }}
-            />
             <h1 className="text-3xl font-bold mb-8">Orders Received</h1>
             {orders.length > 0 ? (
                 <div className="space-y-6">
