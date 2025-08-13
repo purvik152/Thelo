@@ -114,8 +114,8 @@ export default function ShopkeeperMarketplace() {
   return (
     <main className="container mx-auto py-8 max-w-7xl flex flex-col align-center justify-center">
       <Toaster richColors />
-      <div className="mb-8">
-        <MarketplaceSearch 
+      <div className="mb-8 bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6 mx-4">
+        <MarketplaceSearch
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             location={location}
