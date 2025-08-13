@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { toast, Toaster } from 'sonner';
+import { toast } from 'sonner';
 
 // Define the types for the populated order data
 interface PopulatedCustomer {
