@@ -7,7 +7,7 @@ import { ProductCard } from '@/components/custom/ProductCard';
 import { MarketplaceSearch } from '@/components/custom/MarketplaceSearch';
 import { ProductActions } from '@/components/custom/ProductActions';
 import { IProduct } from '@/models/Product';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 
 // Interface for product data including the seller's details
 interface PopulatedSeller {
@@ -113,16 +113,6 @@ export default function ShopkeeperMarketplace() {
 
   return (
     <main className="container mx-auto py-8 max-w-7xl flex flex-col align-center justify-center">
-      <Toaster
-        richColors
-        position="bottom-center"
-        toastOptions={{
-          style: {
-            margin: '0 auto 24px auto',
-            maxWidth: '400px',
-          },
-        }}
-      />
       <div className="mb-8 bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6 mx-4">
         <MarketplaceSearch
             searchTerm={searchTerm}
