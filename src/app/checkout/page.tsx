@@ -115,9 +115,14 @@ export default function CheckoutPage() {
 
     
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-[#FBF3E5] via-[#FDFBF4] to-[#F8F2E8] relative">
+            {/* Decorative elements */}
+            <div className="absolute inset-0 bg-grid-pattern opacity-3"></div>
+            <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-[#BEA093]/10 to-transparent rounded-full blur-xl"></div>
+            <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-[#D4C4B0]/10 to-transparent rounded-full blur-xl"></div>
+
             <Navbar />
-            <div className="container mx-auto py-8 lg:py-16 bg-white">
+            <div className="container mx-auto py-8 lg:py-16 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg mx-4 my-8 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 px-16">
                     {/* Left Column: Form */}
                     <div className="lg:col-span-7">
