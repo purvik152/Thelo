@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen bg-gradient-to-br from-[#FBF3E5] via-white to-[#FDFBF4]`}>
         {/* 2. This is the most important part. CartProvider MUST wrap {children}. */}
         <CartProvider>
           {children}
