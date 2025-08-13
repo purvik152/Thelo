@@ -14,13 +14,15 @@ export default function SellerLayout({
   children: React.ReactNode;
 }) {
   return (
-    // FIX: Removed `items-center` to allow children to expand to full width.
-    <div className="min-h-screen flex flex-col items-center  bg-muted/40">
-      
-        <SellerNavbar />
-      
-      {/* FIX: Added `w-full` and `flex-grow` to the main element. */}
-      <main className="w-full flex-grow max-w-7xl">
+    <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-[#FBF3E5] via-[#FDFBF4] to-[#F8F2E8] relative">
+      {/* Decorative background elements */}
+      <div className="absolute inset-0 bg-grid-pattern opacity-3"></div>
+      <div className="absolute top-40 left-20 w-64 h-64 bg-gradient-to-br from-[#BEA093]/5 to-transparent rounded-full blur-2xl"></div>
+      <div className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-br from-[#D4C4B0]/5 to-transparent rounded-full blur-2xl"></div>
+
+      <SellerNavbar />
+
+      <main className="w-full flex-grow max-w-7xl relative z-10">
         {children}
       </main>
     </div>

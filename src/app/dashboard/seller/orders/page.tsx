@@ -84,18 +84,18 @@ export default function OrdersReceivedPage() {
 
     if (isLoading) {
         return (
-            <div className="container mx-auto py-8">
-                <h1 className="text-3xl font-bold mb-8">Orders Received</h1>
-                <div className="space-y-6">
-                    <Skeleton className="h-64 w-full" />
-                    <Skeleton className="h-64 w-full" />
-                </div>
+        <div className="container mx-auto py-8 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg mx-4 my-8">
+            <h1 className="text-3xl font-bold mb-8">Orders Received</h1>
+            <div className="space-y-6">
+                <Skeleton className="h-64 w-full" />
+                <Skeleton className="h-64 w-full" />
             </div>
-        )
+        </div>
+    )
     }
 
     return (
-        <div className="container mx-auto py-8">
+        <div className="container mx-auto py-8 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg mx-4 my-8">
             <h1 className="text-3xl font-bold mb-8">Orders Received</h1>
             {orders.length > 0 ? (
                 <div className="space-y-6">

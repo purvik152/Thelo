@@ -187,7 +187,9 @@ export default function SellerDashboard() {
     
     return (
         <div className="w-full py-8 px-4 sm:px-6 lg:px-8">
-            {profileExists ? <ManageProductsView /> : <CreateProfileView onProfileCreated={checkProfile} />}
+            <div className="bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg p-8 mx-4 my-8">
+                {profileExists ? <ManageProductsView /> : <CreateProfileView onProfileCreated={checkProfile} />}
+            </div>
         </div>
     );
 }

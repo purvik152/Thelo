@@ -7,7 +7,7 @@ import { ProductCard } from '@/components/custom/ProductCard';
 import { MarketplaceSearch } from '@/components/custom/MarketplaceSearch';
 import { ProductActions } from '@/components/custom/ProductActions';
 import { IProduct } from '@/models/Product';
-import { Toaster, toast } from 'sonner';
+import { toast } from 'sonner';
 
 // Interface for product data including the seller's details
 interface PopulatedSeller {
@@ -23,7 +23,7 @@ interface PopulatedProduct extends Omit<IProduct, 'seller'> {
 // A new component for the right-side detail view
 function ProductDetailView({ product }: { product: PopulatedProduct }) {
   return (
-    <div className="sticky top-24 bg-[#FDFBF4]"> {/* Makes the right column "stick" */}
+    <div className="sticky top-24"> {/* Makes the right column "stick" */}
         <div className="relative w-full h-80 mb-6 rounded-lg overflow-hidden">
           <Image
             src={product.imageUrl || 'https://placehold.co/800x600/e2e8f0/475569?text=Image'}
@@ -113,9 +113,8 @@ export default function ShopkeeperMarketplace() {
 
   return (
     <main className="container mx-auto py-8 max-w-7xl flex flex-col align-center justify-center">
-      <Toaster richColors />
-      <div className="mb-8">
-        <MarketplaceSearch 
+      <div className="mb-8 bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6 mx-4">
+        <MarketplaceSearch
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
             location={location}
@@ -124,10 +123,10 @@ export default function ShopkeeperMarketplace() {
         />
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mx-4">
         {/* Left Column: Product List */}
         <div className="lg:col-span-5 xl:col-span-4">
-          <div className="space-y-2">
+          <div className="space-y-2 bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6">
             {isLoading ? (
               Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} className="h-20 w-full rounded-lg" />)
             ) : products.length > 0 ? (
@@ -147,15 +146,17 @@ export default function ShopkeeperMarketplace() {
 
         {/* Right Column: Product Detail */}
         <div className="lg:col-span-7 xl:col-span-8">
-          {isLoading ? (
-            <Skeleton className="h-[800px] w-full rounded-lg" />
-          ) : selectedProduct ? (
-            <ProductDetailView product={selectedProduct} />
-          ) : (
-             <div className="flex h-full items-center justify-center text-muted-foreground">
-                <p>Select a product to see details.</p>
-             </div>
-          )}
+          <div className="bg-white/60 backdrop-blur-sm rounded-2xl shadow-lg p-6 min-h-[800px]">
+            {isLoading ? (
+              <Skeleton className="h-[700px] w-full rounded-lg" />
+            ) : selectedProduct ? (
+              <ProductDetailView product={selectedProduct} />
+            ) : (
+               <div className="flex h-full items-center justify-center text-muted-foreground">
+                  <p>Select a product to see details.</p>
+               </div>
+            )}
+          </div>
         </div>
       </div>
     </main>
