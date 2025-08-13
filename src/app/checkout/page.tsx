@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Navbar } from '@/components/custom/Navbar';
-import { toast } from 'sonner';
+import { toast, Toaster } from 'sonner';
 import { Textarea } from '@/components/ui/textarea';
 
 interface User {
@@ -121,6 +121,16 @@ export default function CheckoutPage() {
             <div className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-[#BEA093]/10 to-transparent rounded-full blur-xl"></div>
             <div className="absolute bottom-20 right-10 w-40 h-40 bg-gradient-to-br from-[#D4C4B0]/10 to-transparent rounded-full blur-xl"></div>
 
+            <Toaster
+                richColors
+                position="bottom-center"
+                toastOptions={{
+                  style: {
+                    margin: '0 auto 24px auto',
+                    maxWidth: '400px',
+                  },
+                }}
+            />
             <Navbar />
             <div className="container mx-auto py-8 lg:py-16 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg mx-4 my-8 relative z-10">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 px-16">
