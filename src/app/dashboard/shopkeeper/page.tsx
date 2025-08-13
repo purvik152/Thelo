@@ -23,7 +23,7 @@ interface PopulatedProduct extends Omit<IProduct, 'seller'> {
 // A new component for the right-side detail view
 function ProductDetailView({ product }: { product: PopulatedProduct }) {
   return (
-    <div className="sticky top-24 bg-[#FDFBF4]"> {/* Makes the right column "stick" */}
+    <div className="sticky top-24"> {/* Makes the right column "stick" */}
         <div className="relative w-full h-80 mb-6 rounded-lg overflow-hidden">
           <Image
             src={product.imageUrl || 'https://placehold.co/800x600/e2e8f0/475569?text=Image'}
