@@ -59,7 +59,7 @@ export default function MyOrdersPage() {
 
     if (isLoading) {
         return (
-            <div className="container mx-auto py-8 max-w-7xl bg-white">
+            <div className="container mx-auto py-8 max-w-7xl bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg mx-4 my-8">
                 <h1 className="text-3xl font-bold mb-8">My Orders</h1>
                 <div className="space-y-6">
                     <Skeleton className="h-48 w-full rounded-lg" />
@@ -70,7 +70,7 @@ export default function MyOrdersPage() {
     }
 
     return (
-        <div className="container mx-auto py-8 max-w-7xl px-16 bg-white">
+        <div className="container mx-auto py-8 max-w-7xl px-16 bg-white/70 backdrop-blur-sm rounded-2xl shadow-lg mx-4 my-8">
             <h1 className="text-3xl font-bold mb-8">My Orders</h1>
             {orders.length > 0 ? (
                 <div className="space-y-6">
